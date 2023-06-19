@@ -71,7 +71,7 @@ export default class Recipe {
       const li = document.createElement("li");
       li.innerHTML = `
         <p>${ingredient.ingredient}</p>
-        <p class="recipe-card__ingredient-quantity">${ingredient.quantity ? ingredient.quantity : ""}${ingredient.unit ? (ingredient.unit === "grammes" ? "g" : ingredient.unit) : ""}</p>
+        <p class="recipe-card__ingredient-quantity">${ingredient.quantity ? ingredient.quantity : "-"} ${ingredient.unit ? (ingredient.unit === "grammes" ? "g" : ingredient.unit) : ""}</p>
       `
       
       list.appendChild(li);
