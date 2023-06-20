@@ -3,13 +3,98 @@ import Recipe from "./models/Recipe.js";
 
 const recipesWrapper = document.querySelector(".recipes");
 
-recipes.forEach(recipe => {
-  const thisRecipe = new Recipe(recipe);
-  recipesWrapper.appendChild(thisRecipe.renderCard());
-});
+/**
+ * Populates the page with recipe cards.
+ * @param {array} recipes - All recipies or a subset of recipies that match the search parameters set by the user. 
+ * @returns {void}
+ */
+function showRecipes(recipes) {
+  recipesWrapper.innerHTML = "";                    // Clear existing cards from the page.
+  recipes.forEach(recipe => {                       // For each recipe:
+    const thisRecipe = new Recipe(recipe);          // Create a new Recipe object.
+    const thisRecipeCard = thisRecipe.renderCard(); // Use the new Recipe object to render a card.
+    recipesWrapper.appendChild(thisRecipeCard);     // Add this card to the page.
+  })
+}
 
+/**
+ * Checks if the searchbar input meets the minimum length requirements.
+ * @param {string} input - What the user types into the searchbar.
+ * @returns {boolean}
+ */
+function validate(input) {
+  const minLength = 3;
+  if (input.length < minLength) {
+    console.log(`Error: The input string must contain ${minLength} or more characters.`);
+    return false;
+  } else {
+    return true;
+  }
+}
 
-////////////////////////////////////////
+/**
+ * Finds recipes that contain strings that match user input.
+ * @param {string} input - Characters a user types into the searchbar.
+ * @returns {array} - An array containing only those recipes that match user input.
+ */
+function findMatches(input) {
+  
+  /**
+   * Tests user input against recipe database fields to find matches.
+   * @param {object} recipe - An object that groups all the properties of a recipe.
+   * @returns {boolean} - True if there is a match, false otherwise.
+   */
+
+  function isAMatch(recipe) {
+    if (recipe.name.toLowerCase().includes(input.toLowerCase()) ||
+        recipe.description.toLowerCase().includes(input.toLowerCase())) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const matches = recipes.filter(recipe => isAMatch(recipe));
+  return matches;
+}
+
+/**
+ * Listens for and reacts to user input on the main searchbar.
+ * @returns {void}
+ */
+function listenForUserInput() {
+  const inputField = document.querySelector(".searchbar__input");
+
+  inputField.addEventListener("input", (e) => {
+    let userInput = e.target.value;
+    const inputIsValid = validate(userInput);
+
+    if (inputIsValid) {
+      showRecipes(findMatches(userInput));
+    } else {
+      showRecipes(recipes);
+    }
+  });
+}
+
+/**
+ * Establishes an explicit order of function execution.
+ * @returns {void}
+ */
+function init() {
+  showRecipes(recipes); // Render all the recipes on the page for the first time.
+  listenForUserInput(); // Activate event listeners on the main searchbar.
+}
+
+init();
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//// CONSTRUCTION AREA /////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////
+//// Dropdown menus ////
+////////////////////////
 
 // Get a list of ingredients from every recipe. This gives us a list of lists.
 const allRecipesIngredientLists = recipes.map(recipe => recipe.ingredients);
@@ -34,3 +119,13 @@ uniqueIngredients.sort();
 //   e.innerText = ingr;
 //   recipesWrapper.appendChild(e);
 // });
+
+const dropdownList = document.querySelector(".dropdown__list");
+
+uniqueIngredients.forEach(ingredient => {
+  const li = document.createElement("li");
+  li.classList.add("dropdown__list-item");
+
+  li.innerText = ingredient;
+  dropdownList.appendChild(li);
+});
