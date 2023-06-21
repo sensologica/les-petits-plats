@@ -69,6 +69,14 @@ function findMatches(input) {
  * @returns {void}
  */
 function listenForUserInput() {
+  // This boolean "switch" allows us to test if all recipies are currently displayed on the homepage. 
+  // If yes, then we do not rerender the recipe cards every time user input changes length (from 2 characters
+  // to 1 and from 1 to 0). We only rerender the first time the input length goes from valid to invalid (from
+  // 3 characters to 2 characters). Likewise, it does not rerender the page until the user input reaches the 
+  // minimum required length of 3 characters. These checks are needed to prevent unncecessary computations
+  // and to optimize the responsiveness of the UI.
+  let showingAllRecipes = true;
+
   const inputField = document.querySelector(".searchbar__input");
 
   inputField.addEventListener("input", (e) => {
@@ -76,8 +84,10 @@ function listenForUserInput() {
     const inputIsValid = validate(userInput);
 
     if (inputIsValid) {
+      showingAllRecipes = false;
       showRecipes(findMatches(userInput));
-    } else {
+    } else if (!inputIsValid && !showingAllRecipes) {
+      showingAllRecipes = true;
       showRecipes(recipes);
     }
   });
