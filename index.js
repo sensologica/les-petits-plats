@@ -38,23 +38,29 @@ function validate(input) {
  * @returns {array} - An array containing only those recipes that match user input.
  */
 function findMatches(input) {
-  
   /**
-   * Tests user input against recipe database fields to find matches.
-   * @param {object} recipe - An object that groups all the properties of a recipe.
+   * Tests user input against fields of the recipe database to find matches.
+   * @param {object} recipe - An object that represents a single recipe.
    * @returns {boolean} - True if there is a match, false otherwise.
    */
-
   function isAMatch(recipe) {
-    if (recipe.name.toLowerCase().includes(input.toLowerCase()) ||
-        recipe.description.toLowerCase().includes(input.toLowerCase())) {
+    // Use lowercase to ensure that there are no omissions due to case differences.
+    const userInput = input.toLowerCase();
+    const recipeName = recipe.name.toLowerCase();
+    const recipeDescription = recipe.description.toLowerCase();
+    const recipeIngredients = recipe.ingredients.map(ingredients => ingredients.ingredient.toLowerCase());
+
+    if (recipeName.includes(userInput) ||
+        recipeDescription.includes(userInput) ||
+        recipeIngredients.some(ingredient => ingredient.includes(userInput))) {
       return true;
     } else {
       return false;
     }
   };
 
-  const matches = recipes.filter(recipe => isAMatch(recipe));
+  // Filters all recipes to include only those recipes that match user search.
+  const matches = recipes.filter(recipe => isAMatch(recipe)); 
   return matches;
 }
 
