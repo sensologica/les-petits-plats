@@ -46,6 +46,7 @@ img, video {
   --color_yellow: #FFD15B;
   --color_black: #1B1B1B;
   --color_gray: #7A7A7A;
+  --color_gray-light: #C6C6C6;
   --color_background-gray: #EDEDED;
 }
 
@@ -207,4 +208,116 @@ h1 {
 .recipe-card__ingredient-quantity {
   font-weight: 400;
   color: var(--color_gray);
+}
+
+/* Toolbar and dropdown menus */
+
+.toolbar {
+  font-family: Manrope, sans-serif;
+  display: flex;
+  margin: 21px 0;
+}
+
+.dropdown {
+  width: 200px;
+  background-color: #FFFFFF;
+  border-radius: 11px;
+  padding-top: 16px;
+  margin: 0 auto;
+}
+
+.dropdown__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+}
+
+.dropdown__disclosure-triangle {
+  width: 13px;
+  height: auto;
+}
+
+.dropdown__searchbar {
+  display: flex;
+  align-items: center;
+  margin: 16px;
+  padding: 8px 12px 9px 8px;
+  border: 1px solid var(--color_gray-light);
+  border-radius: 2px;
+}
+
+.dropdown__searchbar-input {
+  font-family: Manrope, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--color_gray);
+  width: 100%;
+  border: none;
+  /* border: 1px solid var(--color_gray-light);
+  border-radius: 2px; */
+  outline: none;
+}
+
+.dropdown__searchbar-icon {
+  height: 14px;
+  width: auto;
+  margin-left: 4px;
+}
+
+.dropdown__options-list-ul {
+  padding: 8px 0;
+  list-style-type: none;
+}
+
+.dropdown__options-list-li {
+  font-size: 14px;
+  color: var(--color_black);
+  padding: 9px 16px;
+  line-height: 19px;
+  cursor: pointer;
+}
+
+.dropdown__options-list-li:hover {
+  background-color: #F4F4F4;
+}
+
+.dropdown__selects-list-ul {
+  list-style-type: none;
+}
+
+.dropdown__selects-list-li {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: var(--color_black);
+  background-color: var(--color_yellow);
+  padding: 9px 16px;
+  line-height: 19px;
+}
+
+.dropdown__selects-list-li:hover {
+  font-weight: 700;
+}
+
+.dropdown__selects-list-li-btn-close {
+  width: 16px;
+  background-image: url("./assets/icon_btn_close.svg");
+  background-size: 16px;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: none;
+}
+
+.dropdown__selects-list-li:hover .dropdown__selects-list-li-btn-close {
+  display: block;
+}
+
+.visually-hidden {
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
 }

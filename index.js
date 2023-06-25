@@ -1,5 +1,6 @@
 import {recipes} from "./data/recipes.js";
 import Recipe from "./models/Recipe.js";
+import Dropdown from "./models/Dropdown.js"
 
 const recipesWrapper = document.querySelector(".recipes");
 
@@ -112,36 +113,22 @@ init();
 //// Dropdown menus ////
 ////////////////////////
 
-// Get a list of ingredients from every recipe. This gives us a list of lists.
-const allRecipesIngredientLists = recipes.map(recipe => recipe.ingredients);
+const ingredientsDropdown = new Dropdown("Ingrédients");
+ingredientsDropdown.init();
 
-// Go into each recipe and into each of the recipe's ingredients and push every
-// found ingredient into a new array. This array will contain duplicates. 
-const allIngredients = [];
-allRecipesIngredientLists.forEach(recipe => recipe.forEach(ingredient => allIngredients.push(ingredient.ingredient)));
+// // Get a list of ingredients from every recipe. This gives us a list of lists.
+// const allRecipesIngredientLists = recipes.map(recipe => recipe.ingredients);
 
-// Eliminate all duplicate entries from the list, giving up a list of unique values only.
-const uniqueIngredientsSet = new Set(allIngredients);
+// // Go into each recipe and into each of the recipe's ingredients and push every
+// // found ingredient into a new array. This array will contain duplicates. 
+// const allIngredients = [];
+// allRecipesIngredientLists.forEach(recipe => recipe.forEach(ingredient => allIngredients.push(ingredient.ingredient)));
 
-// Convert the set back into an array so we can use array methods on it.
-const uniqueIngredients = Array.from(uniqueIngredientsSet);
+// // Eliminate all duplicate entries from the list, giving up a list of unique values only.
+// const uniqueIngredientsSet = new Set(allIngredients);
 
-// Sort the array in alphabetical order.
-uniqueIngredients.sort();
+// // Convert the set back into an array so we can use array methods on it.
+// const uniqueIngredients = Array.from(uniqueIngredientsSet);
 
-// Example of how we can populate the dropdown with these ingredients
-// uniqueIngredients.forEach(ingr => {
-//   const e = document.createElement("p");
-//   e.innerText = ingr;
-//   recipesWrapper.appendChild(e);
-// });
-
-const dropdownList = document.querySelector(".dropdown__list");
-
-uniqueIngredients.forEach(ingredient => {
-  const li = document.createElement("li");
-  li.classList.add("dropdown__list-item");
-
-  li.innerText = ingredient;
-  dropdownList.appendChild(li);
-});
+// // Sort the array in alphabetical order.
+// uniqueIngredients.sort();
