@@ -167,20 +167,15 @@ export default class Dropdown {
       const userInput = e.target.value;
 
       const filteredOptionsList = this.optionsList.filter(item => item.includes(userInput));
-      
       this.renderOptionsList(filteredOptionsList);
-      this.enableEventListeners();
+      this.onOptionsListItemClick();
     });
-  }
-
-  enableEventListeners() {
-    this.onOptionsListFilter();
-    this.onOptionsListItemClick();
   }
 
   init() {
     this.render();
     this.renderOptionsList(this.optionsList);
-    this.enableEventListeners();
+    this.onOptionsListFilter();
+    this.onOptionsListItemClick();
   }
 }
