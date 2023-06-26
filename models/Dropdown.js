@@ -163,7 +163,7 @@ export default class Dropdown {
     searchbar.addEventListener("input", (e) => {
       const userInput = e.target.value;
 
-      const filteredOptionsList = this.optionsList.filter(item => item.includes(userInput));
+      const filteredOptionsList = this.optionsList.filter(item => item.toLowerCase().includes(userInput.toLowerCase()));
       this.renderOptionsList(filteredOptionsList);
       this.onOptionsListItemClick();
     });
