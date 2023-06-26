@@ -130,6 +130,5 @@ const uniqueIngredients = Array.from(uniqueIngredientsSet);
 // Sort the array in alphabetical order.
 uniqueIngredients.sort();
 
-const ingredientsDropdown = new Dropdown("Ingrédients");
-ingredientsDropdown.optionsList = uniqueIngredients;
+const ingredientsDropdown = new Dropdown("Ingrédients", uniqueIngredients);
 ingredientsDropdown.init();

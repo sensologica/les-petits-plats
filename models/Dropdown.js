@@ -4,8 +4,9 @@ export default class Dropdown {
   #selectsList = [];
   #isOpen = false;
 
-  constructor(name) {
+  constructor(name, optionsList) {
     this.#name = name;
+    this.#optionsList = optionsList;
   }
 
   get name() {
@@ -22,10 +23,6 @@ export default class Dropdown {
 
   get isOpen() {
     return this.#isOpen;
-  }
-
-  set optionsList(items) {
-    this.#optionsList = items;
   }
 
   set selectsList(items) {
