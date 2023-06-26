@@ -113,22 +113,23 @@ init();
 //// Dropdown menus ////
 ////////////////////////
 
+// Get a list of ingredients from every recipe. This gives us a list of lists.
+const allRecipesIngredientLists = recipes.map(recipe => recipe.ingredients);
+
+// Go into each recipe and into each of the recipe's ingredients and push every
+// found ingredient into a new array. This array will contain duplicates. 
+const allIngredients = [];
+allRecipesIngredientLists.forEach(recipe => recipe.forEach(ingredient => allIngredients.push(ingredient.ingredient)));
+
+// Eliminate all duplicate entries from the list, giving us a list of unique values only.
+const uniqueIngredientsSet = new Set(allIngredients);
+
+// Convert the set back into an array so we can use array methods on it.
+const uniqueIngredients = Array.from(uniqueIngredientsSet);
+
+// Sort the array in alphabetical order.
+uniqueIngredients.sort();
+
 const ingredientsDropdown = new Dropdown("Ingrédients");
+ingredientsDropdown.optionsList = uniqueIngredients;
 ingredientsDropdown.init();
-
-// // Get a list of ingredients from every recipe. This gives us a list of lists.
-// const allRecipesIngredientLists = recipes.map(recipe => recipe.ingredients);
-
-// // Go into each recipe and into each of the recipe's ingredients and push every
-// // found ingredient into a new array. This array will contain duplicates. 
-// const allIngredients = [];
-// allRecipesIngredientLists.forEach(recipe => recipe.forEach(ingredient => allIngredients.push(ingredient.ingredient)));
-
-// // Eliminate all duplicate entries from the list, giving up a list of unique values only.
-// const uniqueIngredientsSet = new Set(allIngredients);
-
-// // Convert the set back into an array so we can use array methods on it.
-// const uniqueIngredients = Array.from(uniqueIngredientsSet);
-
-// // Sort the array in alphabetical order.
-// uniqueIngredients.sort();

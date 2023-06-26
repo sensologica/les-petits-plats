@@ -1,6 +1,6 @@
 export default class Dropdown {
   #name;
-  #optionsList = ["apple", "banana", "strawberry"];
+  #optionsList = [];
   #selectsList = [];
   #isOpen = false;
 
