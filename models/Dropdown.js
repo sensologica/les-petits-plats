@@ -1,10 +1,10 @@
 import { OptionsListItem, SelectsListItem } from "./DropdownListItem.js";
 
 export default class Dropdown {
-  #name;
-  #optionsList = [];
-  #selectsList = [];
-  #isOpen = false;
+  #name;             // The name of the dropdown.
+  #optionsList = []; // A list that holds all the available options for a user to choose from.
+  #selectsList = []; // A list that holds all the options a user has chosen.
+  #isOpen = false;   // Represents the state of the dropdown (open or collapsed).
 
   constructor(name, optionsList) {
     this.#name = name;
@@ -50,7 +50,7 @@ export default class Dropdown {
 
     dropdown.innerHTML = content;
 
-    // Attach the dropdown to the toolbar
+    // Attach the dropdown to the toolbar.
     const toolbar = document.querySelector(".toolbar");
     toolbar.appendChild(dropdown);
   }
@@ -67,7 +67,7 @@ export default class Dropdown {
       index++;
     })
 
-    // Attach the options list to the dropdown
+    // Attach the options list to the dropdown.
     const optionsListWrapper = document.querySelector(`[data-id=options-${this.name}]`);
     optionsListWrapper.innerHTML = "";
     optionsListWrapper.appendChild(ul);
@@ -86,12 +86,10 @@ export default class Dropdown {
     selectsListWrapper.appendChild(ul); 
   }
 
-  open() {
-  }
-
-  close() {
-  }
-
+  /**
+   * Listens for and handles user input on the dropdowns' searchbars.
+   * @returns {void}
+   */
   onOptionsListFilter() {
     const searchbar = document.querySelector(".dropdown__searchbar-input");
 
@@ -101,6 +99,12 @@ export default class Dropdown {
       let filteredOptionsList = this.optionsList.filter(item => item.toLowerCase().includes(userInput.toLowerCase()));
       this.renderOptionsList(filteredOptionsList);
     });
+  }
+
+  open() {
+  }
+
+  close() {
   }
 
   init() {
