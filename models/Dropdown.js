@@ -40,7 +40,7 @@ export default class Dropdown {
         <p>${this.name}</p>
         <img src="./assets/disclosure-triangle.svg" alt="" class="dropdown__disclosure-triangle">
       </div>
-      <div class="dropdown__searchbar">
+      <div class="dropdown__searchbar" data-id="searchbar-${this.name}">
         <input type="search" class="dropdown__searchbar-input">
         <img src="./assets/icon_search_gray.svg" alt="" class="dropdown__searchbar-icon">
       </div>
@@ -91,7 +91,7 @@ export default class Dropdown {
    * @returns {void}
    */
   onOptionsListFilter() {
-    const searchbar = document.querySelector(".dropdown__searchbar-input");
+    const searchbar = document.querySelector(`[data-id=searchbar-${this.name}]`);
 
     searchbar.addEventListener("input", (e) => {
       const userInput = e.target.value;
