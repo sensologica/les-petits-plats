@@ -106,29 +106,34 @@ function init() {
 init();
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//// CONSTRUCTION AREA /////////////////////////////////////////////////////////////////////////////////////////////////
+//// LABORATORY ////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-////////////////////////
-//// Dropdown menus ////
-////////////////////////
+let ingredients = recipes.map(recipe => recipe.ingredients);
+ingredients = ingredients.flat();
+ingredients = ingredients.map(ingredientObject => ingredientObject.ingredient);
+ingredients = [...new Set(ingredients)]; // Eliminate duplicates. Converts array to set and then immediately back to array.
+ingredients.sort();
 
-// Get a list of ingredients from every recipe. This gives us a list of lists.
-const allRecipesIngredientLists = recipes.map(recipe => recipe.ingredients);
+let appliances = recipes.map(recipe => recipe.appliance); // 50 items. Potential duplicates.
+appliances = appliances.map(appliance => appliance.toLowerCase());
+appliances = [...new Set(appliances)]; // 11 items. No duplicates.
+appliances.sort();
 
-// Go into each recipe and into each of the recipe's ingredients and push every
-// found ingredient into a new array. This array will contain duplicates. 
-const allIngredients = [];
-allRecipesIngredientLists.forEach(recipe => recipe.forEach(ingredient => allIngredients.push(ingredient.ingredient)));
+let utensils = recipes.map(recipe => recipe.utensils);
+utensils = utensils.flat(); // 122 items. Potential duplicates.
+utensils = utensils.map(utensil => utensil.toLowerCase());
+utensils = [...new Set(utensils)]; // 30 items. No duplicates.
+utensils.sort();
 
-// Eliminate all duplicate entries from the list, giving us a list of unique values only.
-const uniqueIngredientsSet = new Set(allIngredients);
+// Test data
+// ingredients = ["Apple", "Banana", "Kiwi", "Mango", "Strawberry"];
 
-// Convert the set back into an array so we can use array methods on it.
-const uniqueIngredients = Array.from(uniqueIngredientsSet);
-
-// Sort the array in alphabetical order.
-uniqueIngredients.sort();
-
-const ingredientsDropdown = new Dropdown("Ingrédients", uniqueIngredients);
+const ingredientsDropdown = new Dropdown("Ingrédients", ingredients);
 ingredientsDropdown.init();
+
+const appliancesDropdown = new Dropdown("Appareils", appliances);
+appliancesDropdown.init();
+
+const utensilsDropdown = new Dropdown("Ustensiles", utensils);
+utensilsDropdown.init();
