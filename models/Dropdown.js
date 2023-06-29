@@ -34,19 +34,20 @@ export default class Dropdown {
   render() {
     const dropdown = document.createElement("div");
     dropdown.classList.add("dropdown");
+    dropdown.classList.add(`${this.name}`);
 
     const content = `
-      <div class="dropdown__header" data-id="dropdown-${this.name}">
+      <div class="dropdown__header">
         <p>${this.name}</p>
-        <img src="./assets/disclosure-triangle.svg" alt="" class="dropdown__disclosure-triangle" data-id="triangle-${this.name}">
+        <img src="./assets/disclosure-triangle.svg" alt="" class="dropdown__disclosure-triangle">
       </div>
-      <div class="dropdown__main" data-id="main-${this.name}">
-        <div class="dropdown__searchbar" data-id="searchbar-${this.name}">
+      <div class="dropdown__main">
+        <div class="dropdown__searchbar">
           <input type="search" class="dropdown__searchbar-input">
           <img src="./assets/icon_search_gray.svg" alt="" class="dropdown__searchbar-icon">
         </div>
-        <div class="dropdown__selects-list" data-id="selects-${this.name}"></div>
-        <div class="dropdown__options-list" data-id="options-${this.name}"></div>
+        <div class="dropdown__selects-list"></div>
+        <div class="dropdown__options-list"></div>
       </div>
     `;
 
@@ -70,7 +71,8 @@ export default class Dropdown {
     })
 
     // Attach the options list to the dropdown.
-    const optionsListWrapper = document.querySelector(`[data-id=options-${this.name}]`);
+    const dropdown = document.querySelector(`.${this.name}`);
+    const optionsListWrapper = dropdown.querySelector(".dropdown__options-list");
     optionsListWrapper.innerHTML = "";
     optionsListWrapper.appendChild(ul);
   }
@@ -83,7 +85,8 @@ export default class Dropdown {
       ul.appendChild(item.render());
     });
 
-    const selectsListWrapper = document.querySelector(`[data-id=selects-${this.name}]`);
+    const dropdown = document.querySelector(`.${this.name}`);
+    const selectsListWrapper = dropdown.querySelector(".dropdown__selects-list");
     selectsListWrapper.innerHTML = "";
     selectsListWrapper.appendChild(ul); 
   }
@@ -93,7 +96,8 @@ export default class Dropdown {
    * @returns {void}
    */
   onOptionsListFilter() {
-    const searchbar = document.querySelector(`[data-id=searchbar-${this.name}]`);
+    const dropdown = document.querySelector(`.${this.name}`);
+    const searchbar = dropdown.querySelector(".dropdown__searchbar");
 
     searchbar.addEventListener("input", (e) => {
       const userInput = e.target.value;
@@ -104,18 +108,19 @@ export default class Dropdown {
   }
 
   onDropdownHeaderClick() {
-    const dropdown = document.querySelector(`[data-id=dropdown-${this.name}]`);
-    dropdown.addEventListener("click", () => {
+    const dropdown = document.querySelector(`.${this.name}`);
+    const dropdownHeader = dropdown.querySelector(".dropdown__header");
+    dropdownHeader.addEventListener("click", () => {
       this.open();
     });
   }
 
   open() {
-    const dropdownMain = document.querySelector(`[data-id=main-${this.name}]`);
+    const dropdown = document.querySelector(`.${this.name}`);
+    const dropdownMain = dropdown.querySelector(".dropdown__main");
     dropdownMain.classList.toggle("open");
     
-    const disclosureTriangle = document.querySelector(`[data-id="triangle-${this.name}"]`);
-    console.log(disclosureTriangle);
+    const disclosureTriangle = dropdown.querySelector(".dropdown__disclosure-triangle");
     disclosureTriangle.classList.toggle("open");
   }
 
