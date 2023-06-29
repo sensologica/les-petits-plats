@@ -248,6 +248,7 @@ h1 {
   font-family: Manrope, sans-serif;
   width: 80%;
   display: flex;
+  align-items: flex-start;
   gap: 64px;
 }
 
