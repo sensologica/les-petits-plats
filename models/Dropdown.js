@@ -36,16 +36,18 @@ export default class Dropdown {
     dropdown.classList.add("dropdown");
 
     const content = `
-      <div class="dropdown__header">
+      <div class="dropdown__header" data-id="dropdown-${this.name}">
         <p>${this.name}</p>
-        <img src="./assets/disclosure-triangle.svg" alt="" class="dropdown__disclosure-triangle">
+        <img src="./assets/disclosure-triangle.svg" alt="" class="dropdown__disclosure-triangle" data-id="triangle-${this.name}">
       </div>
-      <div class="dropdown__searchbar" data-id="searchbar-${this.name}">
-        <input type="search" class="dropdown__searchbar-input">
-        <img src="./assets/icon_search_gray.svg" alt="" class="dropdown__searchbar-icon">
+      <div class="dropdown__main" data-id="main-${this.name}">
+        <div class="dropdown__searchbar" data-id="searchbar-${this.name}">
+          <input type="search" class="dropdown__searchbar-input">
+          <img src="./assets/icon_search_gray.svg" alt="" class="dropdown__searchbar-icon">
+        </div>
+        <div class="dropdown__selects-list" data-id="selects-${this.name}"></div>
+        <div class="dropdown__options-list" data-id="options-${this.name}"></div>
       </div>
-      <div class="dropdown__selects-list" data-id="selects-${this.name}"></div>
-      <div class="dropdown__options-list" data-id="options-${this.name}"></div>
     `;
 
     dropdown.innerHTML = content;
@@ -101,14 +103,25 @@ export default class Dropdown {
     });
   }
 
-  open() {
+  onDropdownHeaderClick() {
+    const dropdown = document.querySelector(`[data-id=dropdown-${this.name}]`);
+    dropdown.addEventListener("click", () => {
+      this.open();
+    });
   }
 
-  close() {
+  open() {
+    const dropdownMain = document.querySelector(`[data-id=main-${this.name}]`);
+    dropdownMain.classList.toggle("open");
+    
+    const disclosureTriangle = document.querySelector(`[data-id="triangle-${this.name}"]`);
+    console.log(disclosureTriangle);
+    disclosureTriangle.classList.toggle("open");
   }
 
   init() {
     this.render();
+    this.onDropdownHeaderClick();
     this.renderOptionsList(this.optionsList);
     this.onOptionsListFilter();
   }

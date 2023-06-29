@@ -159,7 +159,7 @@ h1 {
 
 .recipes {
   width: 80%;
-  margin: 144px auto;
+  margin: 100px auto;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 48px;
@@ -253,11 +253,9 @@ h1 {
 }
 
 .dropdown {
-  width: 184px;
+  width: 200px;
   background-color: #FFFFFF;
   border-radius: 11px;
-  padding-top: 16px;
-  /* box-shadow: 0px 4px 20px 4px rgba(0, 0, 0, 0.1); */
   overflow: hidden;
 }
 
@@ -265,18 +263,37 @@ h1 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 16px;
+  padding: 16px;
+  cursor: pointer;
+}
+
+.dropdown__main {
+  display: none;
+}
+
+.dropdown__main.open {
+  display: block;
+}
+
+.dropdown:has(.dropdown__main.open) {
+  box-shadow: 0px 4px 20px 4px rgba(0, 0, 0, 0.1);
 }
 
 .dropdown__disclosure-triangle {
   width: 13px;
   height: auto;
+  transition: transform 0.2s;
+}
+
+.dropdown__disclosure-triangle.open {
+  transform: rotate(-180deg);
 }
 
 .dropdown__searchbar {
   display: flex;
   align-items: center;
   margin: 16px;
+  margin-top: 0;
   padding: 8px 12px 9px 8px;
   border: 1px solid var(--color_gray-light);
   border-radius: 2px;
