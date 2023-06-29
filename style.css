@@ -51,7 +51,7 @@ img, video {
   --color_black: #1B1B1B;
   --color_gray: #7A7A7A;
   --color_gray-light: #C6C6C6;
-  --color_background-gray: #EDEDED;
+  --color_gray-background: #EDEDED;
 }
 
 
@@ -61,7 +61,7 @@ img, video {
 /* Styles */
 
 body {
-  background-color: var(--color_background-gray);
+  background-color: var(--color_gray-background);
 }
 
 header {
