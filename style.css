@@ -256,6 +256,8 @@ h1 {
   background-color: #FFFFFF;
   border-radius: 11px;
   padding-top: 16px;
+  /* box-shadow: 0px 4px 20px 4px rgba(0, 0, 0, 0.1); */
+  overflow: hidden;
 }
 
 .dropdown__header {
@@ -295,25 +297,45 @@ h1 {
   margin-left: 4px;
 }
 
-.dropdown__options-list {
-  height: 240px;
-  overflow-y: auto;
+.dropdown__options-list-ul {
+  height: 242px;
+  overflow-y: auto; /* Makes the list vertically scrollable if its content exceeds its height. */
+  list-style-type: none;
+  margin: 16px;
+  margin-right: 6px;
 }
 
-.dropdown__options-list-ul {
-  list-style-type: none;
+.dropdown__options-list-ul::-webkit-scrollbar {
+  width: 4px;
+}
+
+.dropdown__options-list-ul::-webkit-scrollbar-track {
+  background: var(--color_gray-background);
+  border-radius: 2px;
+}
+
+.dropdown__options-list-ul::-webkit-scrollbar-thumb {
+  background: var(--color_gray-light);
+  border-radius: 2px;
+}
+
+.dropdown__options-list-ul::-webkit-scrollbar-thumb:hover {
+  background: var(--color_gray);  
 }
 
 .dropdown__options-list-li {
   font-size: 14px;
-  color: var(--color_black);
-  padding: 9px 16px;
   line-height: 19px;
+  color: var(--color_black);
+  padding: 10px;
+  padding-top: 8px;
+  margin-right: 8px;
   cursor: pointer;
+  border-radius: 6px;
 }
 
 .dropdown__options-list-li:hover {
-  background-color: #F4F4F4;
+  background-color: var(--color_gray-background);
 }
 
 .dropdown__selects-list-ul {
