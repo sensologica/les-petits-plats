@@ -241,12 +241,13 @@ h1 {
 /* Toolbar and Dropdown Filters */
 
 .toolbar {
-  position: absolute;
-  left: 10%;
-  right: 10%;
-  z-index: 99;
+  /* position: absolute; */
+  /* left: 10%; */
+  /* right: 10%; */
+  /* z-index: 99; */
   font-family: Manrope, sans-serif;
   width: 80%;
+  margin: 0 auto;
   display: flex;
   align-items: flex-start;
   gap: 64px;
@@ -385,4 +386,35 @@ h1 {
 
 .dropdown__selects-list-li:hover .dropdown__selects-list-li-btn-remove {
   display: block;
+}
+
+
+
+
+
+/* Tags */
+
+.tags-container {
+  width: 80%;
+  margin: 0 auto;
+  display: flex;
+  gap: 24px;
+}
+
+.tag {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  padding: 16px;
+  font-family: Manrope, sans-serif;
+  font-size: 14px;
+  background-color: var(--color_yellow);
+  border-radius: 10px;
+}
+
+.tag__btn-remove {
+  width: 10px;
+  height: 10px;
+  cursor: pointer;
 }

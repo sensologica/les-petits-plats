@@ -81,14 +81,14 @@ export default class Dropdown {
     const ul = document.createElement("ul");
     ul.classList.add("dropdown__selects-list-ul");
 
-    this.selectsList.forEach(item => {
-      ul.appendChild(item.render());
-    });
+    // this.selectsList.forEach(item => {
+    //   ul.appendChild(item.render());
+    // });
 
     const dropdown = document.querySelector(`.${this.name}`);
     const selectsListWrapper = dropdown.querySelector(".dropdown__selects-list");
-    selectsListWrapper.innerHTML = "";
-    selectsListWrapper.appendChild(ul); 
+    // selectsListWrapper.innerHTML = "";
+    selectsListWrapper.appendChild(ul);
   }
 
   /**
