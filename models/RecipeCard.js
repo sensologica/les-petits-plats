@@ -1,4 +1,4 @@
-export default class Recipe {
+export default class RecipeCard {
   #id;
   #image;
   #name;

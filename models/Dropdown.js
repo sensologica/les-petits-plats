@@ -1,34 +1,29 @@
-import { OptionsListItem, SelectsListItem } from "./DropdownListItem.js";
+import { OptionListItem } from "./DropdownListItem.js";
 
 export default class Dropdown {
-  #name;             // The name of the dropdown.
-  #optionsList = []; // A list that holds all the available options for a user to choose from.
-  #selectsList = []; // A list that holds all the options a user has chosen.
-  #isOpen = false;   // Represents the state of the dropdown (open or collapsed).
+  #name;               // The name of the dropdown.
+  #optionList = [];    // A list that holds all available options.
+  #selectionList = []; // A list that holds user-selected options.
 
-  constructor(name, optionsList) {
+  constructor(name, optionList) {
     this.#name = name;
-    this.#optionsList = optionsList;
+    this.#optionList = optionList;
   }
 
   get name() {
     return this.#name;
   }
 
-  get optionsList() {
-    return this.#optionsList;
+  get optionList() {
+    return this.#optionList;
   }
 
-  get selectsList() {
-    return this.#selectsList;
+  get selectionList() {
+    return this.#selectionList;
   }
 
-  get isOpen() {
-    return this.#isOpen;
-  }
-
-  set selectsList(items) {
-    this.#selectsList = items;
+  set selectionList(items) {
+    this.#selectionList = items;
   }
 
   render() {
@@ -46,71 +41,63 @@ export default class Dropdown {
           <input type="search" class="dropdown__searchbar-input">
           <img src="./assets/icon_search_gray.svg" alt="" class="dropdown__searchbar-icon">
         </div>
-        <div class="dropdown__selects-list"></div>
-        <div class="dropdown__options-list"></div>
+        <div class="dropdown__selection-list"></div>
+        <div class="dropdown__option-list"></div>
       </div>
     `;
 
     dropdown.innerHTML = content;
 
-    // Attach the dropdown to the toolbar.
-    const toolbar = document.querySelector(".toolbar");
+    const toolbar = document.querySelector(".toolbar__dropdowns");
     toolbar.appendChild(dropdown);
   }
 
-  renderOptionsList(options) {
+  renderOptionList(options) {
     const ul = document.createElement("ul");
-    ul.classList.add("dropdown__options-list-ul");
+    ul.classList.add("dropdown__option-list-ul");
 
-    let index = 0; // Assign an index to each options list item so that it can be used later to reinsert items from the selects list.
+    // Assign an index to each Option List Item. This index will be used to reinsert items into
+    // their original position in the Option List when they are removed from the Selection List.
+    // This eliminates the need to alphabetically sort the Option List every time an item is reinserted.
+    let index = 0; 
 
-    options.forEach(item => {
-      const optionsListItem = new OptionsListItem(this, item, index);
-      ul.appendChild(optionsListItem.render());
+    options.forEach(option => {
+      const optionListItem = new OptionListItem(this, option, index);
+      ul.appendChild(optionListItem.render());
       index++;
     })
 
-    // Attach the options list to the dropdown.
+    // Attach the newly creater Option List to its Dropdown.
     const dropdown = document.querySelector(`.${this.name}`);
-    const optionsListWrapper = dropdown.querySelector(".dropdown__options-list");
-    optionsListWrapper.innerHTML = "";
-    optionsListWrapper.appendChild(ul);
+    const optionList = dropdown.querySelector(".dropdown__option-list");
+    optionList.innerHTML = "";
+    optionList.appendChild(ul);
   }
 
-  renderSelectsList() {
+  renderSelectionList() {
     const ul = document.createElement("ul");
-    ul.classList.add("dropdown__selects-list-ul");
-
-    // this.selectsList.forEach(item => {
-    //   ul.appendChild(item.render());
-    // });
+    ul.classList.add("dropdown__selection-list-ul");
 
     const dropdown = document.querySelector(`.${this.name}`);
-    const selectsListWrapper = dropdown.querySelector(".dropdown__selects-list");
-    // selectsListWrapper.innerHTML = "";
-    selectsListWrapper.appendChild(ul);
+    const selectionList = dropdown.querySelector(".dropdown__selection-list");
+    selectionList.appendChild(ul);
   }
 
-  /**
-   * Listens for and handles user input on the dropdowns' searchbars.
-   * @returns {void}
-   */
-  onOptionsListFilter() {
+  onSearchbarInput() {
     const dropdown = document.querySelector(`.${this.name}`);
     const searchbar = dropdown.querySelector(".dropdown__searchbar");
 
     searchbar.addEventListener("input", (e) => {
       const userInput = e.target.value;
-
-      let filteredOptionsList = this.optionsList.filter(item => item.toLowerCase().includes(userInput.toLowerCase()));
-      this.renderOptionsList(filteredOptionsList);
+      let filteredOptionList = this.optionList.filter(option => option.toLowerCase().includes(userInput.toLowerCase()));
+      this.renderOptionList(filteredOptionList);
     });
   }
 
-  onDropdownHeaderClick() {
+  onHeaderClick() {
     const dropdown = document.querySelector(`.${this.name}`);
-    const dropdownHeader = dropdown.querySelector(".dropdown__header");
-    dropdownHeader.addEventListener("click", () => {
+    const header = dropdown.querySelector(".dropdown__header");
+    header.addEventListener("click", () => {
       this.open();
     });
   }
@@ -126,8 +113,8 @@ export default class Dropdown {
 
   init() {
     this.render();
-    this.onDropdownHeaderClick();
-    this.renderOptionsList(this.optionsList);
-    this.onOptionsListFilter();
+    this.onHeaderClick();
+    this.renderOptionList(this.optionList);
+    this.onSearchbarInput();
   }
 }

@@ -1,7 +1,10 @@
+import Tag from "./Tag.js";
+
 class DropdownListItem {
-  #parentDropdown; // The dropdown the list item belongs to.
-  #text;           // The text inside the list item.
-  #index;          // Used as an index to re-insert an item in its previous location without having to redo alphabetical sorting on the entire list. More information below where the index is used.
+  #parentDropdown; // The Dropdown the List Item belongs to.
+  #text;           // The text inside the List Item.
+  #index;          // Used to re-insert the Item into its original position in its Option List.
+  #domNode;        // The DOM node of the List Item.
 
   constructor(parentDropdown, text, index) {
     this.#parentDropdown = parentDropdown;
@@ -20,113 +23,100 @@ class DropdownListItem {
   get index() {
     return this.#index;
   }
-}
 
-export class OptionsListItem extends DropdownListItem {
-  render() {
-    const li = document.createElement("li");
-    li.classList.add("dropdown__options-list-li");
-    li.innerText = this.text;
+  get domNode() {
+    return this.#domNode;
+  }
 
-    li.addEventListener("click", (e) => {
-      const clickedItem = e.target; // Grab the clicked item's DOM node.
-      clickedItem.remove(); // Remove the clicked item's DOM node from the DOM tree.
-      this.parentDropdown.optionsList.splice(this.index, 1); // Use the clicked item's index to remove it from the `optionsList` array without having to run a search on the entire array.
-      // Now the DOM (presentation layer) and the `optionsList` array (data layer) are in sync: the item is removed visually from the UI, but also from the `optionsList` array.
-    
-      const selectsListItem = new SelectsListItem(this.parentDropdown, this.text, this.index); // Add the clicked item to the `selectsList` array. 
-
-      this.parentDropdown.renderSelectsList(); // Render/update the selects list.
-      selectsListItem.render();
-      this.parentDropdown.selectsList.push(selectsListItem);       
-    });
-
-    return li;
+  set domNode(element) {
+    this.#domNode = element;
   }
 }
 
-export class SelectsListItem extends DropdownListItem {
+export class OptionListItem extends DropdownListItem {
   render() {
-    // Get the selects list of the dropdown to which this list item belongs.
-    const dropdown = document.querySelector(`.${this.parentDropdown.name}`);
-    const selectsList = dropdown.querySelector(".dropdown__selects-list");
-
-    // Create a selects list item.
     const li = document.createElement("li");
-    li.classList.add("dropdown__selects-list-li");
+    li.classList.add("dropdown__option-list-li");
     li.innerText = this.text;
 
-    // Create a "remove" button and attach it to the selects list item.
+    li.addEventListener("click", (e) => this.handleClick(e));
+
+    return li;
+  }
+
+  handleClick(e) {
+    const clickedItem = e.target; // Get the clicked item's DOM node.
+    clickedItem.remove(); // Remove the clicked item's DOM node from the DOM tree.
+    this.parentDropdown.optionList.splice(this.index, 1); // Use the clicked item's index to remove it from the `optionList` array without having to run a search on the entire array.
+
+    const selectionListItem = new SelectionListItem(this.parentDropdown, this.text, this.index); // Add the clicked item to the `selectionList` array. 
+    selectionListItem.render();
+
+    const clickedItemText = e.target.innerText; // Get the clicked item's inner text.
+    const tag = new Tag(clickedItemText, selectionListItem);
+    selectionListItem.linkedTag = tag;
+    tag.addToTagListDom();
+    tag.addToTagListArray();
+  }
+}
+
+export class SelectionListItem extends DropdownListItem {
+  #linkedTag;
+
+  get linkedTag() {
+    return this.#linkedTag;
+  }
+
+  set linkedTag(tag) {
+    this.#linkedTag = tag;
+  }
+
+  render() {
+    // Get the selection list of the dropdown to which this list item belongs.
+    const dropdown = document.querySelector(`.${this.parentDropdown.name}`);
+    const selectionList = dropdown.querySelector(".dropdown__selection-list");
+
+    // Create a selection list item.
+    const li = document.createElement("li");
+    li.classList.add("dropdown__selection-list-li");
+    li.innerText = this.text;
+
+    // Create a "remove" button and attach it to the selection list item.
     const btnRemove = document.createElement("button");
-    btnRemove.classList.add("dropdown__selects-list-li-btn-remove");
+    btnRemove.classList.add("dropdown__selection-list-li-btn-remove");
     li.appendChild(btnRemove);
+
+    // Store the list item's DOM node as a property to facilitate future operations (e.g. removing the list item).
+    this.domNode = li;
 
     // Add event listeners to the "remove" button.
     btnRemove.addEventListener("click", (e) => {
       const clickedItem = e.target.parentNode;
-      this.removeFromDOM(clickedItem);
-      this.removeFromSelectsListArray(clickedItem);
-      this.removeFromTagsList(clickedItem);
-      this.restoreInOptionsList();
+
+      this.removeFromSelectionListDom();
+      this.removeFromSelectionListArray(clickedItem);
+
+      this.restoreInOptionList();
+
+      this.linkedTag.removeFromTagListDom();
+      this.linkedTag.removeFromTagListArray(clickedItem);      
     });
 
-    // Append the list item to the selects list.
-    selectsList.appendChild(li);
-
-    this.renderTag();
+    // Append the list item to the selection list.
+    selectionList.appendChild(li);
   }
 
-  removeFromDOM(item) {
-    item.remove();
+  removeFromSelectionListDom() {
+    this.domNode.remove();
   }
 
-  removeFromSelectsListArray(item) {
+  removeFromSelectionListArray(item) {
     const clickedItemText = item.innerText;
-    this.parentDropdown.selectsList = this.parentDropdown.selectsList.filter(item => item.text !== clickedItemText);    
+    this.parentDropdown.selectionList = this.parentDropdown.selectionList.filter(item => item.text !== clickedItemText);    
   }
 
-  removeFromTagsList(item) {
-    const clickedItemText = item.innerText;
-    const tagsContainer = document.querySelector(".tags-container");
-    
-    // TODO Need to escape whitespaces, otherwise the query selector fails on multi-word items.
-    const itemToRemove = tagsContainer.querySelector(`[data-id=${clickedItemText}]`);
-    itemToRemove.remove();
-  }
-
-  restoreInOptionsList() {
-    this.parentDropdown.optionsList.splice(this.index, 0, this.text); // Holding onto the index throughout these operations allows us to easily place the item back where it was without having to do any kind of performance-costly operations on the array.
-    this.parentDropdown.renderOptionsList(this.parentDropdown.optionsList);
-  }
-
-  renderTag() {
-    const tagsContainer = document.querySelector(".tags-container");
-
-    // Build tag element
-    const tag = document.createElement("div");
-    tag.classList.add("tag");
-
-    // TODO Need to escape whitespaces, otherwise the query selector fails on multi-word items.
-    tag.setAttribute("data-id", this.text);
-
-    const tagContent = `${this.text}<img src="../assets/icon_btn_remove-tag.svg" alt="" class="tag__btn-remove">`;
-    tag.innerHTML = tagContent;
-
-    tagsContainer.appendChild(tag);
-
-    // Add event listeners to the tag's "remove" button.
-    const tagBtnRemove = tag.querySelector(".tag__btn-remove");
-    tagBtnRemove.addEventListener("click", (e) => {
-      const clickedItem = e.target.parentNode;
-      this.removeFromDOM(clickedItem);
-      // this.tagRemoveSelectsListItem(e);
-    });
-  }
-
-  tagRemoveSelectsListItem(e) {
-    const clickedItemText = e.target.parentNode.innerText;
-    const selectsList = this.parentDropdown.selectsList;
-    const itemToRemove = selectsList.filter(item => item.text === clickedItemText);
-    // this.remove(itemToRemove);
+  restoreInOptionList() {
+    this.parentDropdown.optionList.splice(this.index, 0, this.text); // Holding onto the index throughout these operations allows us to easily place the item back where it was without having to do any kind of performance-costly operations on the array.
+    this.parentDropdown.renderOptionList(this.parentDropdown.optionList);
   }
 }

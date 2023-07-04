@@ -1,6 +1,10 @@
-import {recipes} from "./data/recipes.js";
-import Recipe from "./models/Recipe.js";
+import { recipes } from "./data/recipes.js";
+import RecipeCard from "./models/RecipeCard.js";
 import Dropdown from "./models/Dropdown.js"
+import TagList from "./models/TagList.js";
+import RecipeCounter from "./models/RecipeCounter.js";
+
+export const tagList = new TagList();
 
 const recipesWrapper = document.querySelector(".recipes");
 
@@ -12,7 +16,7 @@ const recipesWrapper = document.querySelector(".recipes");
 function showRecipes(recipes) {
   recipesWrapper.innerHTML = "";                    // Clear existing cards from the page.
   recipes.forEach(recipe => {                       // For each recipe:
-    const thisRecipe = new Recipe(recipe);          // Create a new Recipe object.
+    const thisRecipe = new RecipeCard(recipe);          // Create a new Recipe Card object.
     const thisRecipeCard = thisRecipe.renderCard(); // Use the new Recipe object to render a card.
     recipesWrapper.appendChild(thisRecipeCard);     // Add this card to the page.
   })
@@ -132,14 +136,21 @@ function renderDropdowns() {
   utensilsDropdown.init();
 }
 
+function renderRecipeCounter() {
+  const recipeCounter = new RecipeCounter();
+  recipeCounter.count = recipes.length;
+  recipeCounter.render();
+}
+
 /**
  * Establishes an explicit order of function execution.
  * @returns {void}
  */
 function init() {
-  showRecipes(recipes); // Render all recipes on the page for the first time.
-  listenForUserInput(); // Activate event listeners on the main searchbar.
-  renderDropdowns();    // Render all dropdowns.
+  showRecipes(recipes);  // Render all recipes on the page for the first time.
+  listenForUserInput();  // Activate event listeners on the main searchbar.
+  renderDropdowns();     // Render all dropdowns.
+  renderRecipeCounter(); // Render the recipe counter.
 }
 
 init();
