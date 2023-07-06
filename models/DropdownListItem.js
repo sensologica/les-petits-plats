@@ -50,10 +50,10 @@ export class OptionListItem extends DropdownListItem {
     clickedItem.remove();
     this.parentDropdown.optionList = this.parentDropdown.optionList.filter(option => option !== clickedItem.innerText);
 
-    this.parentDropdown.optionList = this.parentDropdown.optionList.filter(option => option !== clickedItem.innerText); // Use the clicked item's index to remove it from the `optionList` array without having to run a search on the entire array.
-
-    const selectionListItem = new SelectionListItem(this.parentDropdown, this.text, this.index); // Add the clicked item to the `selectionList` array. 
+    // Create a new Selection List Item, render it to the DOM, and push it into the Selection List array.
+    const selectionListItem = new SelectionListItem(this.parentDropdown, this.text, this.index);
     selectionListItem.render();
+    this.parentDropdown.selectionList.push(selectionListItem);
 
     const clickedItemText = e.target.innerText; // Get the clicked item's inner text.
     const tag = new Tag(clickedItemText, selectionListItem);
