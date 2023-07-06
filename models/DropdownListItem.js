@@ -3,13 +3,11 @@ import Tag from "./Tag.js";
 class DropdownListItem {
   #parentDropdown; // The Dropdown the List Item belongs to.
   #text;           // The text inside the List Item.
-  #index;          // Used to re-insert the Item into its original position in its Option List.
   #domNode;        // The DOM node of the List Item.
 
-  constructor(parentDropdown, text, index) {
+  constructor(parentDropdown, text) {
     this.#parentDropdown = parentDropdown;
     this.#text = text;
-    this.#index = index;
   }
 
   get parentDropdown() {
@@ -18,10 +16,6 @@ class DropdownListItem {
 
   get text() {
     return this.#text;
-  }
-
-  get index() {
-    return this.#index;
   }
 
   get domNode() {
@@ -51,11 +45,12 @@ export class OptionListItem extends DropdownListItem {
     this.parentDropdown.optionList = this.parentDropdown.optionList.filter(option => option !== clickedItem.innerText);
 
     // Create a new Selection List Item, render it to the DOM, and push it into the Selection List array.
-    const selectionListItem = new SelectionListItem(this.parentDropdown, this.text, this.index);
+    const selectionListItem = new SelectionListItem(this.parentDropdown, this.text);
     selectionListItem.render();
     this.parentDropdown.selectionList.push(selectionListItem);
 
-    const clickedItemText = e.target.innerText; // Get the clicked item's inner text.
+    // Create a new Tag, render it to the DOM, and push it into the Tag List array.
+    const clickedItemText = e.target.innerText;
     const tag = new Tag(clickedItemText, selectionListItem);
     selectionListItem.linkedTag = tag;
     tag.addToTagListDom();
@@ -95,14 +90,13 @@ export class SelectionListItem extends DropdownListItem {
     // Add event listeners to the "remove" button.
     btnRemove.addEventListener("click", (e) => {
       const clickedItem = e.target.parentNode;
-
       this.removeFromSelectionListDom();
       this.removeFromSelectionListArray(clickedItem);
 
       this.restoreInOptionList();
 
       this.linkedTag.removeFromTagListDom();
-      this.linkedTag.removeFromTagListArray(clickedItem);      
+      this.linkedTag.removeFromTagListArray(clickedItem);
     });
 
     // Append the list item to the selection list.
@@ -119,7 +113,8 @@ export class SelectionListItem extends DropdownListItem {
   }
 
   restoreInOptionList() {
-    this.parentDropdown.optionList.splice(this.index, 0, this.text); // Holding onto the index throughout these operations allows us to easily place the item back where it was without having to do any kind of performance-costly operations on the array.
+    this.parentDropdown.optionList.push(this.text);
+    this.parentDropdown.optionList.sort();
     this.parentDropdown.renderOptionList(this.parentDropdown.optionList);
   }
 }
