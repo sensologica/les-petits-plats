@@ -22,6 +22,10 @@ export default class Dropdown {
     return this.#selectionList;
   }
 
+  set optionList(items) {
+    this.#optionList = items;
+  }
+
   set selectionList(items) {
     this.#selectionList = items;
   }

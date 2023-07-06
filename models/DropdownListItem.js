@@ -47,7 +47,8 @@ export class OptionListItem extends DropdownListItem {
   handleClick(e) {
     const clickedItem = e.target; // Get the clicked item's DOM node.
     clickedItem.remove(); // Remove the clicked item's DOM node from the DOM tree.
-    this.parentDropdown.optionList.splice(this.index, 1); // Use the clicked item's index to remove it from the `optionList` array without having to run a search on the entire array.
+
+    this.parentDropdown.optionList = this.parentDropdown.optionList.filter(option => option !== clickedItem.innerText); // Use the clicked item's index to remove it from the `optionList` array without having to run a search on the entire array.
 
     const selectionListItem = new SelectionListItem(this.parentDropdown, this.text, this.index); // Add the clicked item to the `selectionList` array. 
     selectionListItem.render();
