@@ -57,6 +57,11 @@ export default class Tag {
       this.linkedSelectionListItem.removeFromSelectionListArray(clickedTag);
 
       this.linkedSelectionListItem.restoreInOptionList();
+
+      // Filter recipes based on user actions.
+      if (this.linkedSelectionListItem.parentDropdown.id === "ingredients") { this.linkedSelectionListItem.parentDropdown.filterByIngredients(); }
+      if (this.linkedSelectionListItem.parentDropdown.id === "appliance") { this.linkedSelectionListItem.parentDropdown.filterByAppliances(); }
+      if (this.linkedSelectionListItem.parentDropdown.id === "utensils") { this.linkedSelectionListItem.parentDropdown.filterByUtensils(); }
     });
   }
 

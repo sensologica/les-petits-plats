@@ -55,6 +55,11 @@ export class OptionListItem extends DropdownListItem {
     selectionListItem.linkedTag = tag;
     tag.addToTagListDom();
     tag.addToTagListArray();
+
+    // Filter recipes based on user actions.
+    if (this.parentDropdown.id === "ingredients") { this.parentDropdown.filterByIngredients(); }
+    if (this.parentDropdown.id === "appliance") { this.parentDropdown.filterByAppliances(); }
+    if (this.parentDropdown.id === "utensils") { this.parentDropdown.filterByUtensils(); }
   }
 }
 
@@ -97,6 +102,11 @@ export class SelectionListItem extends DropdownListItem {
 
       this.linkedTag.removeFromTagListDom();
       this.linkedTag.removeFromTagListArray(clickedItem);
+
+      // Filter recipes based on the updated selection.
+      if (this.parentDropdown.id === "ingredients") { this.parentDropdown.filterByIngredients(); }
+      if (this.parentDropdown.id === "appliance") { this.parentDropdown.filterByAppliances(); }
+      if (this.parentDropdown.id === "utensils") { this.parentDropdown.filterByUtensils(); }
     });
 
     // Append the list item to the selection list.

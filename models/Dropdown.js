@@ -1,17 +1,24 @@
 import { OptionListItem } from "./DropdownListItem.js";
+import { recipes } from "../data/recipes.js";
 
 export default class Dropdown {
   #name;               // The name of the dropdown.
+  #id;                 // The unique ID of the dropdown.
   #optionList = [];    // A list that holds all available options.
   #selectionList = []; // A list that holds user-selected options.
 
-  constructor(name, optionList) {
+  constructor(name, id, optionList) {
     this.#name = name;
+    this.#id = id;
     this.#optionList = optionList;
   }
 
   get name() {
     return this.#name;
+  }
+
+  get id() {
+    return this.#id;
   }
 
   get optionList() {
@@ -113,6 +120,48 @@ export default class Dropdown {
     
     const disclosureTriangle = dropdown.querySelector(".dropdown__disclosure-triangle");
     disclosureTriangle.classList.toggle("open");
+  }
+
+  filterByIngredients() {
+    const userSelection = this.selectionList.map(selectionListItem => selectionListItem.text.toLowerCase());
+
+    const filteredRecipes = recipes.filter(recipe => {
+      return userSelection.every(selectionListItem => { // Evaluates to TRUE if the recipe's ingredients property includes EVERY item in the user's selection.
+        const ingredients = recipe.ingredients.map(ingredient => ingredient.ingredient.toLowerCase());
+        return ingredients.includes(selectionListItem);
+      });
+    });
+
+    console.log(filteredRecipes);
+    return filteredRecipes;
+  }
+
+  filterByAppliances() {
+    const userSelection = this.selectionList.map(selectionListItem => selectionListItem.text.toLowerCase());
+
+    const filteredRecipes = recipes.filter(recipe => {
+      return userSelection.every(selectionListItem => { // Evaluates to TRUE if the recipe's appliance property includes EVERY item in the user's selection.
+        const appliance = recipe.appliance.toLowerCase();
+        return appliance.includes(selectionListItem);
+      });
+    });
+
+    console.log(filteredRecipes);
+    return filteredRecipes;
+  }
+
+  filterByUtensils() {
+    const userSelection = this.selectionList.map(selectionListItem => selectionListItem.text.toLowerCase());
+    
+    const filteredRecipes = recipes.filter(recipe => {
+      return userSelection.every(selectionListItem => { // Evaluates to TRUE if the recipe's utensils property includes EVERY item in the user's selection.
+        const utensils = recipe.utensils.map(utensil => utensil.toLowerCase());
+        return utensils.includes(selectionListItem); 
+      });
+    });
+
+    console.log(filteredRecipes);
+    return filteredRecipes;
   }
 
   init() {

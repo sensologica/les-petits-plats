@@ -124,15 +124,15 @@ function renderDropdowns() {
   utensils.sort(); // Sort the ingredients in alphabetical order.
 
   // Render the ingredients dropdown.
-  const ingredientsDropdown = new Dropdown("Ingrédients", ingredients);
+  const ingredientsDropdown = new Dropdown("Ingrédients", "ingredients", ingredients);
   ingredientsDropdown.init();
 
   // Render the appliances dropdown.
-  const appliancesDropdown = new Dropdown("Appareils", appliances);
+  const appliancesDropdown = new Dropdown("Appareils", "appliance", appliances);
   appliancesDropdown.init();
 
   // Render the utensils dropdown.
-  const utensilsDropdown = new Dropdown("Ustensiles", utensils);
+  const utensilsDropdown = new Dropdown("Ustensiles", "utensils", utensils);
   utensilsDropdown.init();
 }
 
