@@ -1,6 +1,12 @@
+import { filterRecipes } from "../index.js";
+
 export default class FilterList {
-  #filters = []; // An array for storing Filters.
-  #domNode = document.querySelector(".filter-list"); // The DOM node of the Filter List.
+  #filters = {
+    ingredients: [],
+    appliances:  [],
+    utensils:    [],
+  };
+  #domNode = document.querySelector(".filter-list");
 
   get filters() {
     return this.#filters;
@@ -14,11 +20,19 @@ export default class FilterList {
     this.#filters = filters;
   }
 
-  addFilter(clickedFilter) {
-    this.filters.push(clickedFilter);
+  addFilter(filter) {
+    const filterParentDropdown = filter.linkedSelectionListItem.parentDropdown.id;
+    const filterValue = filter.text;
+    this.filters[filterParentDropdown].push(filterValue);
+    // console.log(`Added "${filterValue}" to "FilterList.filters.${filterParentDropdown}".\n`, this.filters);
+    filterRecipes();
   }
 
-  removeFilter(clickedFilter) {
-    this.filters = this.filters.filter(filter => filter != clickedFilter);
+  deleteFilter(filter) {
+    const filterParentDropdown = filter.linkedSelectionListItem.parentDropdown.id;
+    const filterValue = filter.text;
+    this.filters[filterParentDropdown] = this.filters[filterParentDropdown].filter(filter => filter !== filterValue);
+    // console.log(`Removed "${filterValue}" from "FilterList.filters.${filterParentDropdown}".\n`, this.filters);
+    filterRecipes();
   }
 }

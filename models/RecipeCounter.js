@@ -1,5 +1,5 @@
 export default class RecipeCounter {
-  #count = 0;
+  #count;
 
   constructor(numberOfRecipes) {
     this.#count = numberOfRecipes;

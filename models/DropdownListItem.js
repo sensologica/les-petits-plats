@@ -1,5 +1,4 @@
 import Filter from "./Filter.js";
-import { addFilter, removeFilter } from "../index.js";
 
 class DropdownListItem {
   #parentDropdown; // The Dropdown the List Item belongs to.
@@ -33,30 +32,36 @@ export class OptionListItem extends DropdownListItem {
     const li = document.createElement("li");
     li.classList.add("dropdown__option-list-li");
     li.innerText = this.text;
-
     li.addEventListener("click", (e) => this.handleClick(e));
+
+    this.domNode = li; // Store the list item's DOM node as a property to facilitate future operations (e.g. removing the list item).
 
     return li;
   }
 
+  erase() {
+    this.domNode.remove();
+  }
+
+  deleteFromOptionList() {
+    this.parentDropdown.optionList = this.parentDropdown.optionList.filter(option => option !== this.text);
+  }
+
   handleClick(e) {
-    // Remove the clicked Option List Item from the DOM and remove it from the Option List array.
-    const clickedItem = e.target;
-    clickedItem.remove();
-    this.parentDropdown.optionList = this.parentDropdown.optionList.filter(option => option !== clickedItem.innerText);
+    this.erase();
+    this.deleteFromOptionList();
 
     // Create a new Selection List Item, render it to the DOM, and push it into the Selection List array.
     const selectionListItem = new SelectionListItem(this.parentDropdown, this.text);
     selectionListItem.render();
     this.parentDropdown.selectionList.push(selectionListItem);
-    addFilter(this.parentDropdown.id, selectionListItem.text);
 
     // Create a new Filter, render it to the DOM, and push it into the Filter List array.
     const clickedItemText = e.target.innerText;
     const filter = new Filter(clickedItemText, selectionListItem);
     selectionListItem.linkedFilter = filter;
-    filter.addToFilterListDom();
-    filter.addToFilterListArray();
+    filter.render();
+    filter.addToFilterList();
   }
 }
 
@@ -72,46 +77,28 @@ export class SelectionListItem extends DropdownListItem {
   }
 
   render() {
-    // Get the selection list of the dropdown to which this list item belongs.
     const dropdown = document.querySelector(`.${this.parentDropdown.name}`);
     const selectionList = dropdown.querySelector(".dropdown__selection-list");
 
-    // Create a selection list item.
     const li = document.createElement("li");
     li.classList.add("dropdown__selection-list-li");
     li.innerText = this.text;
 
-    // Create a "remove" button and attach it to the selection list item.
     const btnRemove = document.createElement("button");
     btnRemove.classList.add("dropdown__selection-list-li-btn-remove");
     li.appendChild(btnRemove);
 
-    // Store the list item's DOM node as a property to facilitate future operations (e.g. removing the list item).
-    this.domNode = li;
+    this.domNode = li; // Store the list item's DOM node as a property to facilitate future operations (e.g. removing the list item).
 
-    // Add event listeners to the "remove" button.
-    btnRemove.addEventListener("click", (e) => {
-      const clickedItem = e.target.parentNode;
-      this.removeFromSelectionListDom();
-      this.removeFromSelectionListArray(clickedItem);
-
-      removeFilter(this.parentDropdown.id, this.text);
-
-      this.restoreInOptionList();
-
-      this.linkedFilter.removeFromFilterListDom();
-      this.linkedFilter.removeFromFilterListArray(clickedItem);
-    });
-
-    // Append the list item to the selection list.
+    btnRemove.addEventListener("click", (e) => this.handleRemoveBtnClick(e));
     selectionList.appendChild(li);
   }
 
-  removeFromSelectionListDom() {
+  erase() {
     this.domNode.remove();
   }
 
-  removeFromSelectionListArray(item) {
+  deleteFromSelectionList(item) {
     const clickedItemText = item.innerText;
     this.parentDropdown.selectionList = this.parentDropdown.selectionList.filter(item => item.text !== clickedItemText);    
   }
@@ -120,5 +107,15 @@ export class SelectionListItem extends DropdownListItem {
     this.parentDropdown.optionList.push(this.text);
     this.parentDropdown.optionList.sort();
     this.parentDropdown.renderOptionList(this.parentDropdown.optionList);
+  }
+
+  handleRemoveBtnClick(e) {
+    const clickedItem = e.target.parentNode;
+
+    this.erase();
+    this.deleteFromSelectionList(clickedItem);
+    this.restoreInOptionList();
+    this.linkedFilter.erase();
+    this.linkedFilter.deleteFromFilterList();  
   }
 }

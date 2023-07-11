@@ -66,15 +66,9 @@ export default class Dropdown {
     const ul = document.createElement("ul");
     ul.classList.add("dropdown__option-list-ul");
 
-    // Assign an index to each Option List Item. This index will be used to reinsert items into
-    // their original position in the Option List when they are removed from the Selection List.
-    // This eliminates the need to alphabetically sort the Option List every time an item is reinserted.
-    let index = 0; 
-
     options.forEach(option => {
-      const optionListItem = new OptionListItem(this, option, index);
+      const optionListItem = new OptionListItem(this, option);
       ul.appendChild(optionListItem.render());
-      index++;
     })
 
     // Attach the newly creater Option List to its Dropdown.
