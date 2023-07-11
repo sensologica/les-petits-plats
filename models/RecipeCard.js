@@ -1,24 +1,16 @@
 export default class RecipeCard {
-  #id;
   #image;
   #name;
-  #servings;
   #ingredients;
   #time;
   #description;
-  #appliance;
-  #utensils;
 
   constructor(data) {
-   this.#id = data.id;
    this.#image = data.image;
    this.#name = data.name;
-   this.#servings = data.servings;
    this.#ingredients = data.ingredients;
    this.#time = data.time;
    this.#description = data.description;
-   this.#appliance = data.appliance;
-   this.#utensils = data.utensils;
   }
 
   get image() {
