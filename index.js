@@ -4,11 +4,6 @@ import Dropdown from "./models/Dropdown.js"
 import TagList from "./models/TagList.js";
 import RecipeCounter from "./models/RecipeCounter.js";
 
-let searchMatches = [],
-  ingredientsMatches = [],
-  appliancesMatches = [],
-  utensilsMatches = [];
-
 let activeFilters = {
   ingredients: [],
   appliances: [],
@@ -36,28 +31,9 @@ function filterRecipes() {
       return recipe.utensils.includes(filter);
     });
   });
-  console.log("Filtered", filteredRecipes);
   renderRecipes(filteredRecipes);
   const recipeCounter = new RecipeCounter(filteredRecipes.length);
   recipeCounter.render();
-}
-
-export function setMatches(dropdownId, matches) {
-  if (dropdownId === "ingredients") {
-    ingredientsMatches = matches;
-  }
-
-  if (dropdownId === "appliance") {
-    appliancesMatches = matches;
-  }
-
-  if (dropdownId === "utensils") {
-    utensilsMatches = matches;
-  }
-
-  console.log("Ingredients matches:", ingredientsMatches);
-  console.log("Appliances matches:", appliancesMatches);
-  console.log("Utensils matches:", utensilsMatches);
 }
 
 export const tagList = new TagList();

@@ -1,6 +1,4 @@
 import { OptionListItem } from "./DropdownListItem.js";
-import { recipes } from "../data/recipes.js";
-import { setMatches } from "../index.js";
 
 export default class Dropdown {
   #name;               // The name of the dropdown.
@@ -121,48 +119,6 @@ export default class Dropdown {
     
     const disclosureTriangle = dropdown.querySelector(".dropdown__disclosure-triangle");
     disclosureTriangle.classList.toggle("open");
-  }
-
-  filterByIngredients() {
-    const userSelection = this.selectionList.map(selectionListItem => selectionListItem.text.toLowerCase());
-
-    const ingredientsMatches = recipes.filter(recipe => {
-      return userSelection.every(selectionListItem => { // Evaluates to TRUE if the recipe's ingredients property includes EVERY item in the user's selection.
-        const ingredients = recipe.ingredients.map(ingredient => ingredient.ingredient.toLowerCase());
-        return ingredients.includes(selectionListItem);
-      });
-    });
-
-    setMatches(this.id, ingredientsMatches);
-    return ingredientsMatches;
-  }
-
-  filterByAppliances() {
-    const userSelection = this.selectionList.map(selectionListItem => selectionListItem.text.toLowerCase());
-
-    const appliancesMatches = recipes.filter(recipe => {
-      return userSelection.every(selectionListItem => { // Evaluates to TRUE if the recipe's appliance property includes EVERY item in the user's selection.
-        const appliance = recipe.appliance.toLowerCase();
-        return appliance.includes(selectionListItem);
-      });
-    });
-
-    setMatches(this.id, appliancesMatches);
-    return appliancesMatches;
-  }
-
-  filterByUtensils() {
-    const userSelection = this.selectionList.map(selectionListItem => selectionListItem.text.toLowerCase());
-    
-    const utensilsMatches = recipes.filter(recipe => {
-      return userSelection.every(selectionListItem => { // Evaluates to TRUE if the recipe's utensils property includes EVERY item in the user's selection.
-        const utensils = recipe.utensils.map(utensil => utensil.toLowerCase());
-        return utensils.includes(selectionListItem); 
-      });
-    });
-
-    setMatches(this.id, utensilsMatches);
-    return utensilsMatches;
   }
 
   init() {
