@@ -68,7 +68,7 @@ export class SelectionListItem extends DropdownListItem {
   }
 
   set linkedFilter(filter) {
-    this.#linkedFilter = Filter;
+    this.#linkedFilter = filter;
   }
 
   render() {
