@@ -1,4 +1,5 @@
 import Tag from "./Tag.js";
+import { addFilter, removeFilter } from "../index.js";
 
 class DropdownListItem {
   #parentDropdown; // The Dropdown the List Item belongs to.
@@ -48,6 +49,7 @@ export class OptionListItem extends DropdownListItem {
     const selectionListItem = new SelectionListItem(this.parentDropdown, this.text);
     selectionListItem.render();
     this.parentDropdown.selectionList.push(selectionListItem);
+    addFilter(this.parentDropdown.id, selectionListItem.text);
 
     // Create a new Tag, render it to the DOM, and push it into the Tag List array.
     const clickedItemText = e.target.innerText;
@@ -97,6 +99,8 @@ export class SelectionListItem extends DropdownListItem {
       const clickedItem = e.target.parentNode;
       this.removeFromSelectionListDom();
       this.removeFromSelectionListArray(clickedItem);
+
+      removeFilter(this.parentDropdown.id, this.text);
 
       this.restoreInOptionList();
 

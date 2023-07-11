@@ -1,4 +1,5 @@
 import { tagList } from "../index.js";
+import { addFilter, removeFilter } from "../index.js";
 
 export default class Tag {
   #text;                    // The inner text of the Tag.
@@ -52,6 +53,7 @@ export default class Tag {
       
       this.removeFromTagListDom();
       this.removeFromTagListArray(clickedTag);
+      removeFilter(this.linkedSelectionListItem.parentDropdown.id, this.text);
 
       this.linkedSelectionListItem.removeFromSelectionListDom();
       this.linkedSelectionListItem.removeFromSelectionListArray(clickedTag);

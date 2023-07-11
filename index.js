@@ -4,6 +4,60 @@ import Dropdown from "./models/Dropdown.js"
 import TagList from "./models/TagList.js";
 import RecipeCounter from "./models/RecipeCounter.js";
 
+let searchMatches = [],
+  ingredientsMatches = [],
+  appliancesMatches = [],
+  utensilsMatches = [];
+
+let activeFilters = {
+  ingredients: [],
+  appliances: [],
+  utensils: [],
+}
+
+export function addFilter(dropdownName, selectedItem) {
+  activeFilters[dropdownName].push(selectedItem);
+  filterRecipes();
+}
+
+export function removeFilter(dropdownName, selectedItem) {
+  activeFilters[dropdownName] = activeFilters[dropdownName].filter(item => item !== selectedItem);
+  filterRecipes();
+}
+
+function filterRecipes() {
+  const filteredRecipes = recipes.filter(recipe => {
+    return activeFilters.ingredients.every(filter => {
+      const recipeIngredientsSimplified = recipe.ingredients.map(ingredient => ingredient.ingredient);
+      return recipeIngredientsSimplified.includes(filter);
+    }) && activeFilters.appliances.every(filter => {
+      return recipe.appliance.toLowerCase().includes(filter);
+    }) && activeFilters.utensils.every(filter => {
+      return recipe.utensils.includes(filter);
+    });
+  });
+  console.log("Filtered", filteredRecipes);
+  renderRecipes(filteredRecipes);
+}
+
+export function setMatches(dropdownId, matches) {
+  if (dropdownId === "ingredients") {
+    ingredientsMatches = matches;
+  }
+
+  if (dropdownId === "appliance") {
+    appliancesMatches = matches;
+  }
+
+  if (dropdownId === "utensils") {
+    utensilsMatches = matches;
+  }
+
+  console.log("Ingredients matches:", ingredientsMatches);
+  console.log("Appliances matches:", appliancesMatches);
+  console.log("Utensils matches:", utensilsMatches);
+}
+
 export const tagList = new TagList();
 
 const recipesWrapper = document.querySelector(".recipes");
@@ -13,7 +67,7 @@ const recipesWrapper = document.querySelector(".recipes");
  * @param {array} recipes - All recipies or a subset of recipies that match the search parameters set by the user. 
  * @returns {void}
  */
-function showRecipes(recipes) {
+function renderRecipes(recipes) {
   recipesWrapper.innerHTML = "";                    // Clear existing cards from the page.
   recipes.forEach(recipe => {                       // For each recipe:
     const thisRecipe = new RecipeCard(recipe);          // Create a new Recipe Card object.
@@ -90,10 +144,10 @@ function listenForUserInput() {
 
     if (inputIsValid) {
       showingAllRecipes = false;
-      showRecipes(findMatches(userInput));
+      renderRecipes(findMatches(userInput));
     } else if (!inputIsValid && !showingAllRecipes) {
       showingAllRecipes = true;
-      showRecipes(recipes);
+      renderRecipes(recipes);
     }
   });
 }
@@ -128,7 +182,7 @@ function renderDropdowns() {
   ingredientsDropdown.init();
 
   // Render the appliances dropdown.
-  const appliancesDropdown = new Dropdown("Appareils", "appliance", appliances);
+  const appliancesDropdown = new Dropdown("Appareils", "appliances", appliances);
   appliancesDropdown.init();
 
   // Render the utensils dropdown.
@@ -147,10 +201,10 @@ function renderRecipeCounter() {
  * @returns {void}
  */
 function init() {
-  showRecipes(recipes);  // Render all recipes on the page for the first time.
-  listenForUserInput();  // Activate event listeners on the main searchbar.
-  renderDropdowns();     // Render all dropdowns.
-  renderRecipeCounter(); // Render the recipe counter.
+  renderRecipes(recipes); // Render all recipes on the page for the first time.
+  listenForUserInput();   // Activate event listeners on the main searchbar.
+  renderDropdowns();      // Render all dropdowns.
+  renderRecipeCounter();  // Render the recipe counter.
 }
 
 init();

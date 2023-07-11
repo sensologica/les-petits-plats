@@ -1,5 +1,6 @@
 import { OptionListItem } from "./DropdownListItem.js";
 import { recipes } from "../data/recipes.js";
+import { setMatches } from "../index.js";
 
 export default class Dropdown {
   #name;               // The name of the dropdown.
@@ -125,43 +126,43 @@ export default class Dropdown {
   filterByIngredients() {
     const userSelection = this.selectionList.map(selectionListItem => selectionListItem.text.toLowerCase());
 
-    const filteredRecipes = recipes.filter(recipe => {
+    const ingredientsMatches = recipes.filter(recipe => {
       return userSelection.every(selectionListItem => { // Evaluates to TRUE if the recipe's ingredients property includes EVERY item in the user's selection.
         const ingredients = recipe.ingredients.map(ingredient => ingredient.ingredient.toLowerCase());
         return ingredients.includes(selectionListItem);
       });
     });
 
-    console.log(filteredRecipes);
-    return filteredRecipes;
+    setMatches(this.id, ingredientsMatches);
+    return ingredientsMatches;
   }
 
   filterByAppliances() {
     const userSelection = this.selectionList.map(selectionListItem => selectionListItem.text.toLowerCase());
 
-    const filteredRecipes = recipes.filter(recipe => {
+    const appliancesMatches = recipes.filter(recipe => {
       return userSelection.every(selectionListItem => { // Evaluates to TRUE if the recipe's appliance property includes EVERY item in the user's selection.
         const appliance = recipe.appliance.toLowerCase();
         return appliance.includes(selectionListItem);
       });
     });
 
-    console.log(filteredRecipes);
-    return filteredRecipes;
+    setMatches(this.id, appliancesMatches);
+    return appliancesMatches;
   }
 
   filterByUtensils() {
     const userSelection = this.selectionList.map(selectionListItem => selectionListItem.text.toLowerCase());
     
-    const filteredRecipes = recipes.filter(recipe => {
+    const utensilsMatches = recipes.filter(recipe => {
       return userSelection.every(selectionListItem => { // Evaluates to TRUE if the recipe's utensils property includes EVERY item in the user's selection.
         const utensils = recipe.utensils.map(utensil => utensil.toLowerCase());
         return utensils.includes(selectionListItem); 
       });
     });
 
-    console.log(filteredRecipes);
-    return filteredRecipes;
+    setMatches(this.id, utensilsMatches);
+    return utensilsMatches;
   }
 
   init() {
