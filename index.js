@@ -1,13 +1,13 @@
-import { recipes } from "./data/recipes.js";
-import RecipeCard from "./models/RecipeCard.js";
-import Dropdown from "./models/Dropdown.js"
-import TagList from "./models/TagList.js";
+import { recipes }   from "./data/recipes.js";
+import RecipeCard    from "./models/RecipeCard.js";
+import Dropdown      from "./models/Dropdown.js"
+import FilterList       from "./models/FilterList.js";
 import RecipeCounter from "./models/RecipeCounter.js";
 
 let activeFilters = {
   ingredients: [],
-  appliances: [],
-  utensils: [],
+  appliances:  [],
+  utensils:    [],
 }
 
 export function addFilter(dropdownName, selectedItem) {
@@ -36,7 +36,7 @@ function filterRecipes() {
   recipeCounter.render();
 }
 
-export const tagList = new TagList();
+export const filterList = new FilterList();
 
 const recipesWrapper = document.querySelector(".recipes");
 

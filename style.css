@@ -399,16 +399,16 @@ h1 {
 
 
 
-/* Tags */
+/* Filters */
 
-.tag-list {
+.filter-list {
   width: 80%;
   margin: 24px auto;
   display: flex;
   gap: 24px;
 }
 
-.tag {
+.filter {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -420,7 +420,7 @@ h1 {
   border-radius: 10px;
 }
 
-.tag__btn-remove {
+.filter__btn-remove {
   width: 10px;
   height: 10px;
   cursor: pointer;
