@@ -1,7 +1,7 @@
 import { recipes }   from "./data/recipes.js";
 import RecipeCard    from "./models/RecipeCard.js";
 import Dropdown      from "./models/Dropdown.js"
-import FilterList       from "./models/FilterList.js";
+import FilterList    from "./models/FilterList.js";
 import RecipeCounter from "./models/RecipeCounter.js";
 
 let activeFilters = {
