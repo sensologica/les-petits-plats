@@ -1,6 +1,10 @@
 export default class RecipeCounter {
   #count = 0;
 
+  constructor(numberOfRecipes) {
+    this.#count = numberOfRecipes;
+  }
+
   get count() {
     return this.#count;
   }
@@ -15,10 +19,7 @@ export default class RecipeCounter {
     counter.innerText = `${this.count} recettes`;
     
     const toolbar = document.querySelector(".toolbar__recipe-counter");
+    toolbar.innerHTML = "";
     toolbar.appendChild(counter);
-  }
-
-  update() {
-
   }
 }

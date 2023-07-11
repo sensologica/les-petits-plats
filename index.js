@@ -38,6 +38,8 @@ function filterRecipes() {
   });
   console.log("Filtered", filteredRecipes);
   renderRecipes(filteredRecipes);
+  const recipeCounter = new RecipeCounter(filteredRecipes.length);
+  recipeCounter.render();
 }
 
 export function setMatches(dropdownId, matches) {
@@ -190,9 +192,8 @@ function renderDropdowns() {
   utensilsDropdown.init();
 }
 
-function renderRecipeCounter() {
-  const recipeCounter = new RecipeCounter();
-  recipeCounter.count = recipes.length;
+function renderRecipeCounter(numberOfRecipes) {
+  const recipeCounter = new RecipeCounter(numberOfRecipes);
   recipeCounter.render();
 }
 
@@ -204,7 +205,7 @@ function init() {
   renderRecipes(recipes); // Render all recipes on the page for the first time.
   listenForUserInput();   // Activate event listeners on the main searchbar.
   renderDropdowns();      // Render all dropdowns.
-  renderRecipeCounter();  // Render the recipe counter.
+  renderRecipeCounter(recipes.length);  // Render the recipe counter.
 }
 
 init();
