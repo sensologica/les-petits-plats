@@ -86,10 +86,13 @@ function listenForUserInput() {
 
     if (inputIsValid) {
       showingAllRecipes = false;
-      renderRecipes(findMatches(userInput));
+      const matches = findMatches(userInput);
+      renderRecipes(matches);
+      renderRecipeCounter(matches.length);
     } else if (!inputIsValid && !showingAllRecipes) {
       showingAllRecipes = true;
       renderRecipes(recipes);
+      renderRecipeCounter(recipes.length);
     }
   });
 }
