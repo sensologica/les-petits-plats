@@ -1,6 +1,14 @@
-import { recipes }   from "./data/recipes.js";
+// Import data.
+import { recipes } from "./data/recipes.js";
+
+// Import utilities.
+import { validate } from "./utils/validate.js";
+// import { combinationFilter } from "./utils/filter.js";
+import { noMatchingRecipes as errorNoMatchingRecipes } from "./utils/error.js";
+
+// Import classes.
 import RecipeCard    from "./models/RecipeCard.js";
-import Dropdown      from "./models/Dropdown.js"
+import Dropdown      from "./models/Dropdown.js";
 import FilterList    from "./models/FilterList.js";
 import RecipeCounter from "./models/RecipeCounter.js";
 
@@ -66,57 +74,31 @@ function renderRecipes(recipes) {
 }
 
 /**
- * Listens for and reacts to user input on the main searchbar.
+ * Handles user input in the Main Search Bar.
  * @returns {void}
  */
 function listenForUserInput() {
-  // This boolean "switch" allows us to test if all recipies are currently displayed on the homepage. 
-  // If yes, then we do not rerender the recipe cards every time user input changes length (from 2 characters
-  // to 1 and from 1 to 0). We only rerender the first time the input length goes from valid to invalid (from
-  // 3 characters to 2 characters). Likewise, it does not rerender the page until the user input reaches the 
-  // minimum required length of 3 characters. These checks are needed to prevent unncecessary computations
-  // and to optimize the responsiveness of the UI.
-  let showingAllRecipes = true;
-
-  const errorWrapper = document.querySelector(".error-message");
-
   const inputField = document.querySelector(".searchbar__input");
 
+  // A switch to prevent unnecessary rerendering of Recipe Cards (e.g. when user input is below minimum length).
+  let recipeCardRenderingDisabled = true;
+
   inputField.addEventListener("input", (e) => {
-    let userInput = e.target.value;
-    const inputIsValid = validate(userInput, errorWrapper);
+    const userInput = e.target.value;
+    const userInputIsValid = validate(userInput);
 
-    if (inputIsValid) {
-      showingAllRecipes = false;
-      const matches = findMatches(userInput);
-
-      if (matches.length < 1) {
-        errorWrapper.innerText = `Aucune recette ne contient "${userInput}". Vous pouvez chercher "tarte aux pommes", "poisson", etc.`;
-      }
-      renderRecipes(matches);
-      renderRecipeCounter(matches.length);
-    } else if (!inputIsValid && !showingAllRecipes) {
-      showingAllRecipes = true;
+    if (userInputIsValid) {
+      recipeCardRenderingDisabled = false;
+      const matchingRecipes = findMatches(userInput);
+      if (matchingRecipes.length < 1) { errorNoMatchingRecipes(userInput) };
+      renderRecipes(matchingRecipes);
+      renderRecipeCounter(matchingRecipes.length);      
+    } else if (!userInputIsValid && !recipeCardRenderingDisabled) {
+      recipeCardRenderingDisabled = true;
       renderRecipes(recipes);
       renderRecipeCounter(recipes.length);
     }
   });
-}
-
-/**
- * Checks if the searchbar input meets the minimum length requirements.
- * @param {string} input - What the user types into the searchbar.
- * @returns {boolean}
- */
-function validate(input, errorWrapper) {
-  const minLength = 3;
-  if (input.length > 0 && input.length < minLength) {
-    errorWrapper.innerText = `Le texte de recherche doit contenir au moins ${minLength} caractères.`;
-    return false;
-  } else {
-    errorWrapper.innerText = "";
-    return true;
-  }
 }
 
 /**
@@ -149,22 +131,6 @@ function findMatches(input) {
   // Filters all recipes to include only those recipes that match user search.
   const matches = recipes.filter(recipe => isAMatch(recipe)); 
   return matches;
-}
-
-export function filterRecipes() {
-  const filteredRecipes = recipes.filter(recipe => {
-    return filterList.filters.ingredients.every(filter => {
-      const recipeIngredientsSimplified = recipe.ingredients.map(ingredient => ingredient.ingredient);
-      return recipeIngredientsSimplified.includes(filter);
-    }) && filterList.filters.appliances.every(filter => {
-      return recipe.appliance.toLowerCase().includes(filter);
-    }) && filterList.filters.utensils.every(filter => {
-      return recipe.utensils.includes(filter);
-    });
-  });
-  renderRecipes(filteredRecipes);
-  const recipeCounter = new RecipeCounter(filteredRecipes.length);
-  recipeCounter.render();
 }
 
 /**
