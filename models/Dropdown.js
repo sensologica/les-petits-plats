@@ -5,6 +5,7 @@ export default class Dropdown {
   #id;                 // The unique ID of the dropdown.
   #optionList = [];    // A list that holds all available options.
   #selectionList = []; // A list that holds user-selected options.
+  #searchbarInput;     // The DOM node of this Dropdown's Search Bar.
 
   constructor(name, id, optionList) {
     this.#name = name;
@@ -28,12 +29,20 @@ export default class Dropdown {
     return this.#selectionList;
   }
 
+  get searchbarInput() {
+    return this.#searchbarInput;
+  }
+
   set optionList(items) {
     this.#optionList = items;
   }
 
   set selectionList(items) {
     this.#selectionList = items;
+  }
+
+  set searchbarInput(element) {
+    this.#searchbarInput = element;
   }
 
   render() {
@@ -57,6 +66,9 @@ export default class Dropdown {
     `;
 
     dropdown.innerHTML = content;
+
+    const searchbarInput = dropdown.querySelector(".dropdown__searchbar-input");
+    this.searchbarInput = searchbarInput;
 
     const toolbar = document.querySelector(".toolbar__dropdowns");
     toolbar.appendChild(dropdown);
@@ -113,6 +125,8 @@ export default class Dropdown {
     
     const disclosureTriangle = dropdown.querySelector(".dropdown__disclosure-triangle");
     disclosureTriangle.classList.toggle("open");
+
+    this.searchbarInput.focus();
   }
 
   init() {
