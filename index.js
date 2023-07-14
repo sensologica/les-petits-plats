@@ -78,15 +78,21 @@ function listenForUserInput() {
   // and to optimize the responsiveness of the UI.
   let showingAllRecipes = true;
 
+  const errorWrapper = document.querySelector(".error-message");
+
   const inputField = document.querySelector(".searchbar__input");
 
   inputField.addEventListener("input", (e) => {
     let userInput = e.target.value;
-    const inputIsValid = validate(userInput);
+    const inputIsValid = validate(userInput, errorWrapper);
 
     if (inputIsValid) {
       showingAllRecipes = false;
       const matches = findMatches(userInput);
+
+      if (matches.length < 1) {
+        errorWrapper.innerText = `Aucune recette ne contient "${userInput}". Vous pouvez chercher "tarte aux pommes", "poisson", etc.`;
+      }
       renderRecipes(matches);
       renderRecipeCounter(matches.length);
     } else if (!inputIsValid && !showingAllRecipes) {
@@ -102,12 +108,13 @@ function listenForUserInput() {
  * @param {string} input - What the user types into the searchbar.
  * @returns {boolean}
  */
-function validate(input) {
+function validate(input, errorWrapper) {
   const minLength = 3;
-  if (input.length < minLength) {
-    console.log(`Error: The input string must contain ${minLength} or more characters.`);
+  if (input.length > 0 && input.length < minLength) {
+    errorWrapper.innerText = `Le texte de recherche doit contenir au moins ${minLength} caractères.`;
     return false;
   } else {
+    errorWrapper.innerText = "";
     return true;
   }
 }
@@ -165,10 +172,10 @@ export function filterRecipes() {
  * @returns {void}
  */
 function init() {
-  renderDropdowns();      // Render all dropdowns.
-  renderRecipeCounter(recipes.length);  // Render the recipe counter.
+  renderDropdowns(); // Render all dropdowns.
+  renderRecipeCounter(recipes.length); // Render the recipe counter.
   renderRecipes(recipes); // Render all recipes on the page for the first time.
-  listenForUserInput();   // Activate event listeners on the main searchbar. 
+  listenForUserInput(); // Activate event listeners on the main searchbar. 
 }
 
 init();

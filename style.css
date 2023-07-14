@@ -114,6 +114,7 @@ h1 {
   padding: 10px;
   background-color: #FFFFFF;
   border-radius: 11px;
+  position: relative;
 }
 
 .searchbar__input {
@@ -149,6 +150,15 @@ h1 {
 .btn-search:hover {
   background-color: var(--color_yellow);
   background-image: url("./assets/icon_search_black.svg");
+}
+
+.error-message {
+  position: absolute;
+  font-family: Manrope, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #FFFFFF;
+  bottom: -24px;
 }
 
 
