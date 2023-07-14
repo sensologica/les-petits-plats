@@ -62,6 +62,13 @@ export class OptionListItem extends DropdownListItem {
     selectionListItem.linkedFilter = filter;
     filter.render();
     filter.addToFilterList();
+
+    // Clear the Dropdown's Search Bar.
+    const dropdown = document.querySelector(`.${this.parentDropdown.name}`);
+    const searchbar = dropdown.querySelector(".dropdown__searchbar-input");
+    if (searchbar.value) { searchbar.value = ""; };
+    this.parentDropdown.optionList.sort();
+    this.parentDropdown.renderOptionList(this.parentDropdown.optionList);
   }
 }
 
