@@ -11,11 +11,11 @@ import { noMatchingRecipes as errorNoMatchingRecipes } from "./utils/error.js";
 // Import classes.
 import RecipeCard    from "./models/RecipeCard.js";
 import Dropdown      from "./models/Dropdown.js";
-import FilterList    from "./models/FilterList.js";
+import TagList    from "./models/TagList.js";
 import RecipeCounter from "./models/RecipeCounter.js";
 
 /**
- * Extracts and formats data from the database and uses that data to render the three dropdown filters.
+ * Extracts and formats data from the database and uses that data to render the three dropdown menus.
  * @returns {void}
  */
 function renderDropdowns() {
@@ -57,7 +57,7 @@ export function renderRecipeCounter(numberOfRecipes) {
   recipeCounter.render();
 }
 
-export const filterList = new FilterList();
+export const tagList = new TagList();
 
 const recipesWrapper = document.querySelector(".recipes");
 

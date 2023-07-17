@@ -1,4 +1,4 @@
-import Filter from "./Filter.js";
+import Tag from "./Tag.js";
 import { updateResults } from "../index.js";
 
 class DropdownListItem {
@@ -57,12 +57,12 @@ export class OptionListItem extends DropdownListItem {
     selectionListItem.render();
     this.parentDropdown.selectionList.push(selectionListItem);
 
-    // Create a new Filter, render it to the DOM, and push it into the Filter List array.
+    // Create a new Tag, render it to the DOM, and push it into the Tag List array.
     const clickedItemText = e.target.innerText;
-    const filter = new Filter(clickedItemText, selectionListItem);
-    selectionListItem.linkedFilter = filter;
-    filter.render();
-    filter.addToFilterList();
+    const tag = new Tag(clickedItemText, selectionListItem);
+    selectionListItem.linkedTag = tag;
+    tag.render();
+    tag.addToTagList();
 
     // Clear the Dropdown's Search Bar.
     const dropdown = document.querySelector(`.${this.parentDropdown.name}`);
@@ -76,14 +76,14 @@ export class OptionListItem extends DropdownListItem {
 }
 
 export class SelectionListItem extends DropdownListItem {
-  #linkedFilter;
+  #linkedTag;
 
-  get linkedFilter() {
-    return this.#linkedFilter;
+  get linkedTag() {
+    return this.#linkedTag;
   }
 
-  set linkedFilter(filter) {
-    this.#linkedFilter = filter;
+  set linkedTag(tag) {
+    this.#linkedTag = tag;
   }
 
   render() {
@@ -125,8 +125,8 @@ export class SelectionListItem extends DropdownListItem {
     this.erase();
     this.deleteFromSelectionList(clickedItem);
     this.restoreInOptionList();
-    this.linkedFilter.erase();
-    this.linkedFilter.deleteFromFilterList();
+    this.linkedTag.erase();
+    this.linkedTag.deleteFromTagList();
 
     updateResults();
   }

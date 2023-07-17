@@ -248,7 +248,7 @@ h1 {
 
 
 
-/* Toolbar and Dropdown Filters */
+/* Toolbar and Dropdown Menus */
 
 .toolbar {
   /* position: absolute; */
@@ -409,16 +409,16 @@ h1 {
 
 
 
-/* Filters */
+/* Tags */
 
-.filter-list {
+.tag-list {
   width: 80%;
   margin: 24px auto;
   display: flex;
   gap: 24px;
 }
 
-.filter {
+.tag {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -430,7 +430,7 @@ h1 {
   border-radius: 10px;
 }
 
-.filter__btn-remove {
+.tag__btn-remove {
   width: 10px;
   height: 10px;
   cursor: pointer;

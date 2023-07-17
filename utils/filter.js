@@ -1,4 +1,4 @@
-import { filterList } from "../index.js";
+import { tagList } from "../index.js";
 
 /**
  * Filters recipes based on dropdown filters set by the user.
@@ -7,13 +7,13 @@ import { filterList } from "../index.js";
  */
 export function filterRecipes(recipes) {
   const filteredRecipes = recipes.filter(recipe => {
-    return filterList.filters.ingredients.every(filter => {
+    return tagList.tags.ingredients.every(tag => {
       const recipeIngredientsSimplified = recipe.ingredients.map(ingredient => ingredient.ingredient);
-      return recipeIngredientsSimplified.includes(filter);
-    }) && filterList.filters.appliances.every(filter => {
-      return recipe.appliance.toLowerCase().includes(filter);
-    }) && filterList.filters.utensils.every(filter => {
-      return recipe.utensils.includes(filter);
+      return recipeIngredientsSimplified.includes(tag);
+    }) && tagList.tags.appliances.every(tag => {
+      return recipe.appliance.toLowerCase().includes(tag);
+    }) && tagList.tags.utensils.every(tag => {
+      return recipe.utensils.includes(tag);
     });
   });
 
