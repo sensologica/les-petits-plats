@@ -3,6 +3,7 @@ import { recipes } from "./data/recipes.js";
 
 // Import utilities.
 import { validate } from "./utils/validate.js";
+import { search } from "./utils/search.js";
 // import { combinationFilter } from "./utils/filter.js";
 import { noMatchingRecipes as errorNoMatchingRecipes } from "./utils/error.js";
 
@@ -61,14 +62,14 @@ const recipesWrapper = document.querySelector(".recipes");
 
 /**
  * Populates the page with recipe cards.
- * @param {array} recipes - All recipies or a subset of recipies that match the search parameters set by the user. 
+ * @param {array} recipes - Each recipe will be used to create a Recipe Card. 
  * @returns {void}
  */
 function renderRecipes(recipes) {
   recipesWrapper.innerHTML = "";                    // Clear existing cards from the page.
   recipes.forEach(recipe => {                       // For each recipe:
     const thisRecipe = new RecipeCard(recipe);      // Create a new Recipe Card object.
-    const thisRecipeCard = thisRecipe.renderCard(); // Use the new Recipe object to render a card.
+    const thisRecipeCard = thisRecipe.renderCard(); // Use the new Recipe Card object to render a card.
     recipesWrapper.appendChild(thisRecipeCard);     // Add this card to the page.
   })
 }
@@ -89,7 +90,7 @@ function listenForUserInput() {
 
     if (userInputIsValid) {
       recipeCardRenderingDisabled = false;
-      const matchingRecipes = findMatches(userInput);
+      const matchingRecipes = search(userInput);
       if (matchingRecipes.length < 1) { errorNoMatchingRecipes(userInput) };
       renderRecipes(matchingRecipes);
       renderRecipeCounter(matchingRecipes.length);      
@@ -99,38 +100,6 @@ function listenForUserInput() {
       renderRecipeCounter(recipes.length);
     }
   });
-}
-
-/**
- * Finds recipes that contain strings that match user input.
- * @param {string} input - Characters a user types into the searchbar.
- * @returns {array} - An array containing only those recipes that match user input.
- */
-function findMatches(input) {
-  /**
-   * Tests user input against fields of the recipe database to find matches.
-   * @param {object} recipe - An object that represents a single recipe.
-   * @returns {boolean} - True if there is a match, false otherwise.
-   */
-  function isAMatch(recipe) {
-    // Use lowercase to ensure that there are no omissions due to case differences.
-    const userInput = input.toLowerCase();
-    const recipeName = recipe.name.toLowerCase();
-    const recipeDescription = recipe.description.toLowerCase();
-    const recipeIngredients = recipe.ingredients.map(ingredients => ingredients.ingredient.toLowerCase());
-
-    if (recipeName.includes(userInput) ||
-        recipeDescription.includes(userInput) ||
-        recipeIngredients.some(ingredient => ingredient.includes(userInput))) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-
-  // Filters all recipes to include only those recipes that match user search.
-  const matches = recipes.filter(recipe => isAMatch(recipe)); 
-  return matches;
 }
 
 /**
