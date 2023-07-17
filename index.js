@@ -3,8 +3,9 @@ import { recipes } from "./data/recipes.js";
 
 // Import utilities.
 import { validate } from "./utils/validate.js";
-import { search } from "./utils/search.js";
-// import { combinationFilter } from "./utils/filter.js";
+import { searchRecipes } from "./utils/search.js";
+import { filterRecipes } from "./utils/filter.js";
+import { intersect } from "./utils/intersect.js";
 import { noMatchingRecipes as errorNoMatchingRecipes } from "./utils/error.js";
 
 // Import classes.
@@ -51,7 +52,7 @@ function renderDropdowns() {
   utensilsDropdown.init();
 }
 
-function renderRecipeCounter(numberOfRecipes) {
+export function renderRecipeCounter(numberOfRecipes) {
   const recipeCounter = new RecipeCounter(numberOfRecipes);
   recipeCounter.render();
 }
@@ -65,13 +66,18 @@ const recipesWrapper = document.querySelector(".recipes");
  * @param {array} recipes - Each recipe will be used to create a Recipe Card. 
  * @returns {void}
  */
-function renderRecipes(recipes) {
+export function renderRecipes(recipes) {
   recipesWrapper.innerHTML = "";                    // Clear existing cards from the page.
   recipes.forEach(recipe => {                       // For each recipe:
     const thisRecipe = new RecipeCard(recipe);      // Create a new Recipe Card object.
     const thisRecipeCard = thisRecipe.renderCard(); // Use the new Recipe Card object to render a card.
     recipesWrapper.appendChild(thisRecipeCard);     // Add this card to the page.
   })
+}
+
+export let userInput = "";
+export function setUserInput(input) {
+  userInput = input;
 }
 
 /**
@@ -85,21 +91,26 @@ function listenForUserInput() {
   let recipeCardRenderingDisabled = true;
 
   inputField.addEventListener("input", (e) => {
-    const userInput = e.target.value;
+    setUserInput(e.target.value);
     const userInputIsValid = validate(userInput);
 
     if (userInputIsValid) {
       recipeCardRenderingDisabled = false;
-      const matchingRecipes = search(userInput);
-      if (matchingRecipes.length < 1) { errorNoMatchingRecipes(userInput) };
-      renderRecipes(matchingRecipes);
-      renderRecipeCounter(matchingRecipes.length);      
+      updateResults();    
     } else if (!userInputIsValid && !recipeCardRenderingDisabled) {
       recipeCardRenderingDisabled = true;
-      renderRecipes(recipes);
-      renderRecipeCounter(recipes.length);
+      updateResults("reset"); // Passing "reset" as a flag resets the search results and circumvents the search function for as long as the input value remains invalid.
     }
   });
+}
+
+export function updateResults(flag) {
+    const searchResults = (flag === "reset") ? searchRecipes("") : searchRecipes(userInput);
+    if (searchResults.length < 1) { errorNoMatchingRecipes(userInput) };
+    const filterResults = filterRecipes(recipes);
+    const intersectionResults = intersect(searchResults, filterResults);
+    renderRecipes(intersectionResults);
+    renderRecipeCounter(intersectionResults.length); 
 }
 
 /**

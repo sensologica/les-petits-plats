@@ -1,4 +1,5 @@
 import Filter from "./Filter.js";
+import { updateResults } from "../index.js";
 
 class DropdownListItem {
   #parentDropdown; // The Dropdown the List Item belongs to.
@@ -69,6 +70,8 @@ export class OptionListItem extends DropdownListItem {
     if (searchbar.value) { searchbar.value = ""; };
     this.parentDropdown.optionList.sort();
     this.parentDropdown.renderOptionList(this.parentDropdown.optionList);
+
+    updateResults();
   }
 }
 
@@ -123,6 +126,8 @@ export class SelectionListItem extends DropdownListItem {
     this.deleteFromSelectionList(clickedItem);
     this.restoreInOptionList();
     this.linkedFilter.erase();
-    this.linkedFilter.deleteFromFilterList();  
+    this.linkedFilter.deleteFromFilterList();
+
+    updateResults();
   }
 }

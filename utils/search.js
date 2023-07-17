@@ -5,9 +5,9 @@ import { recipes } from "../data/recipes.js";
  * @param {string} input - Characters a user types into the searchbar.
  * @returns {array} - An array containing only those recipes that match user input.
  */
-export function search(input) {
+export function searchRecipes(input) {
   /**
-   * Tests user input against fields of the recipe database to find matches.
+   * Tests user input against the recipe database to find matches.
    * @param {object} recipe - An object that represents a single recipe.
    * @returns {boolean} - True if there is a match, false otherwise.
    */
@@ -28,8 +28,9 @@ export function search(input) {
   };
 
   // Filters all recipes to include only those recipes that match user search.
-  const matches = recipes.filter(recipe => isAMatch(recipe)); 
-  return matches;
+  const searchResults = recipes.filter(recipe => isAMatch(recipe));
+  console.log("Search results: ", searchResults);
+  return searchResults;
 }
 
 export function searchB(input) {
@@ -66,13 +67,13 @@ export function searchB(input) {
     }
   }
 
-  const matches = [];
+  const searchResults = [];
 
   for (let i = 0; i < recipes.length; i++) {
     if (isAMatch(recipes[i])) {
-      matches.push(recipes[i]);
+      searchResults.push(recipes[i]);
     }
   }
 
-  return matches;
+  return searchResults;
 }

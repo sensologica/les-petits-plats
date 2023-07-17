@@ -2,6 +2,7 @@
 // The words "add" and "remove" refer to adding to and deleting from an array/object (data layer).
 
 import { filterList } from "../index.js";
+import { updateResults } from "../index.js";
 
 export default class Filter {
   #text;                          // The inner text of the Filter.
@@ -68,5 +69,7 @@ export default class Filter {
     this.linkedSelectionListItem.erase();
     this.linkedSelectionListItem.deleteFromSelectionList(clickedFilter);
     this.linkedSelectionListItem.restoreInOptionList();
+    
+    updateResults();
   }
 }
