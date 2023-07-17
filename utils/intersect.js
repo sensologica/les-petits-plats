@@ -17,7 +17,7 @@ export function intersect(arr1, arr2) {
 
   // Find the intersection.
   const intersectionResults = arr1.filter(element => arr2.includes(element));
-  console.log("Intersection results: ", intersectionResults);
+  // console.log("Intersection results: ", intersectionResults);
 
   return intersectionResults;
 }

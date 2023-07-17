@@ -29,7 +29,7 @@ export function searchRecipes(input) {
 
   // Filters all recipes to include only those recipes that match user search.
   const searchResults = recipes.filter(recipe => isAMatch(recipe));
-  console.log("Search results: ", searchResults);
+  // console.log("Search results: ", searchResults);
   return searchResults;
 }
 

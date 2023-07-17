@@ -17,6 +17,6 @@ export function filterRecipes(recipes) {
     });
   });
 
-  console.log("Filter results: ", filteredRecipes);
+  // console.log("Filter results: ", filteredRecipes);
   return filteredRecipes;
 }
