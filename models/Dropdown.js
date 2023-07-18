@@ -120,7 +120,10 @@ export default class Dropdown {
 
   open() {
     const dropdown = document.querySelector(`.${this.name}`);
+    const dropdownHeader = dropdown.querySelector(".dropdown__header");
     const dropdownMain = dropdown.querySelector(".dropdown__main");
+    dropdown.classList.toggle("open");
+    dropdownHeader.classList.toggle("open");
     dropdownMain.classList.toggle("open");
     
     const disclosureTriangle = dropdown.querySelector(".dropdown__disclosure-triangle");
