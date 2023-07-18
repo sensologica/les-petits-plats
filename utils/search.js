@@ -25,7 +25,7 @@ export function searchRecipes(input) {
     } else {
       return false;
     }
-  };
+  }
 
   // Filters all recipes to include only those recipes that match user search.
   const searchResults = recipes.filter(recipe => isAMatch(recipe));
