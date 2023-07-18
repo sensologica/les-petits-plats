@@ -15,40 +15,58 @@ import TagList    from "./models/TagList.js";
 import RecipeCounter from "./models/RecipeCounter.js";
 
 /**
- * Extracts and formats data from the database and uses that data to render the three dropdown menus.
+ * Extracts names of individual ingredients from a provided collection of recipes, and sorts them in alphabetical order.
+ * @param {array} recipes - A collection of recipes the function will extract ingredients from.
+ * @returns {array} - An array of ingredient names, sorted alphabetically.
+ */
+function extractIngredientsFrom(recipes) {
+  let ingredients = recipes.map(recipe => recipe.ingredients);
+  ingredients = ingredients.flat(); // May contain duplicates.
+  ingredients = ingredients.map(ingredientObject => ingredientObject.ingredient);
+  ingredients = [...new Set(ingredients)]; // Use a set to elimnate duplicates, then immediately convert the set back into an array.
+  ingredients.sort(); // Sort the ingredients in alphabetical order.
+  return ingredients;
+}
+
+/**
+ * Extracts names of individual appliances from a provided collection of recipes, and sorts them in alphabetical order.
+ * @param {array} recipes - A collection of recipes the function will extract appliances from.
+ * @returns {array} - An array of appliance names, sorted alphabetically.
+ */
+function extractAppliancesFrom(recipes) {
+  let appliances = recipes.map(recipe => recipe.appliance); // May contain duplicates.
+  appliances = appliances.map(appliance => appliance.toLowerCase());
+  appliances = [...new Set(appliances)]; // Use a set to elimnate duplicates, then immediately convert the set back into an array.
+  appliances.sort(); // Sort the appliances in alphabetical order.
+  return appliances;
+}
+
+/**
+ * Extracts names of individual utensils from a provided collection of recipes, and sorts them in alphabetical order.
+ * @param {array} recipes - A collection of recipes the function will extract utensils from.
+ * @returns {array} - An array of utensil names, sorted alphabetically.
+ */
+function extractUtensilsFrom(recipes) {
+  let utensils = recipes.map(recipe => recipe.utensils);
+  utensils = utensils.flat(); // May contain duplicates.
+  utensils = utensils.map(utensil => utensil.toLowerCase());
+  utensils = [...new Set(utensils)]; // Use a set to elimnate duplicates, then immediately convert the set back into an array.
+  utensils.sort(); // Sort the utensils in alphabetical order.
+  return utensils;
+}
+
+/**
+ * Renders the three Dropdowns.
  * @returns {void}
  */
 function renderDropdowns() {
-  // Build and format a list of all available ingredients so that it can be used for rendering the ingredients dropdown.
-  let ingredients = recipes.map(recipe => recipe.ingredients);
-  ingredients = ingredients.flat(); // Results in 254 items, potentially containing duplicates.
-  ingredients = ingredients.map(ingredientObject => ingredientObject.ingredient);
-  ingredients = [...new Set(ingredients)]; // Use a set to elimnate duplicates, then immediately convert the set back into an array. Results in 127 unique items.
-  ingredients.sort(); // Sort the ingredients in alphabetical order.
-
-  // Build and format a list of all available appliances so that it can be used for rendering the appliances dropdown.
-  let appliances = recipes.map(recipe => recipe.appliance); // Results in 50 items, potentially containing duplicates.
-  appliances = appliances.map(appliance => appliance.toLowerCase());
-  appliances = [...new Set(appliances)]; // Use a set to elimnate duplicates, then immediately convert the set back into an array. Results in 11 unique items.
-  appliances.sort(); // Sort the ingredients in alphabetical order.
-
-  // Build and format a list of all available utensils so that it can be used for rendering the utensils dropdown.
-  let utensils = recipes.map(recipe => recipe.utensils);
-  utensils = utensils.flat(); // Results in 122 items, potentially containing duplicates.
-  utensils = utensils.map(utensil => utensil.toLowerCase());
-  utensils = [...new Set(utensils)]; // Use a set to elimnate duplicates, then immediately convert the set back into an array. Results in 30 unique items.
-  utensils.sort(); // Sort the ingredients in alphabetical order.
-
-  // Render the ingredients dropdown.
-  const ingredientsDropdown = new Dropdown("Ingrédients", "ingredients", ingredients);
+  const ingredientsDropdown = new Dropdown("Ingrédients", "ingredients", extractIngredientsFrom(recipes));
   ingredientsDropdown.init();
 
-  // Render the appliances dropdown.
-  const appliancesDropdown = new Dropdown("Appareils", "appliances", appliances);
+  const appliancesDropdown = new Dropdown("Appareils", "appliances", extractAppliancesFrom(recipes));
   appliancesDropdown.init();
 
-  // Render the utensils dropdown.
-  const utensilsDropdown = new Dropdown("Ustensiles", "utensils", utensils);
+  const utensilsDropdown = new Dropdown("Ustensiles", "utensils", extractUtensilsFrom(recipes));
   utensilsDropdown.init();
 }
 
