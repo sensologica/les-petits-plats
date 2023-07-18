@@ -2,6 +2,7 @@
 import { recipes } from "./data/recipes.js";
 
 // Import utilities.
+import { sanitize } from "./utils/sanitize.js";
 import { validate } from "./utils/validate.js";
 import { searchRecipes } from "./utils/search.js";
 import { filterRecipes } from "./utils/filter.js";
@@ -109,7 +110,9 @@ function listenForUserInput() {
   let recipeCardRenderingDisabled = true;
 
   inputField.addEventListener("input", (e) => {
-    setUserInput(e.target.value);
+    let userInputClean = sanitize(e.target.value);
+    setUserInput(userInputClean);
+    e.target.value = userInputClean; // Prevents the input field from showing illegal characters.
     const userInputIsValid = validate(userInput);
 
     if (userInputIsValid) {

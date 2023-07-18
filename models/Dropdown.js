@@ -1,3 +1,4 @@
+import { sanitize } from "../utils/sanitize.js";
 import { OptionListItem } from "./DropdownListItem.js";
 
 export default class Dropdown {
@@ -104,8 +105,9 @@ export default class Dropdown {
     const searchbar = dropdown.querySelector(".dropdown__searchbar");
 
     searchbar.addEventListener("input", (e) => {
-      const userInput = e.target.value;
-      let filteredOptionList = this.optionList.filter(option => option.toLowerCase().includes(userInput.toLowerCase()));
+      const userInputClean = sanitize(e.target.value);
+      e.target.value = userInputClean;
+      let filteredOptionList = this.optionList.filter(option => option.toLowerCase().includes(userInputClean.toLowerCase()));
       this.renderOptionList(filteredOptionList);
     });
   }
