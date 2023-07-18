@@ -273,6 +273,10 @@ h1 {
   z-index: 9;
 }
 
+.dropdown.open {
+  box-shadow: 0px 4px 20px 4px rgba(0, 0, 0, 0.1);
+}
+
 .dropdown__header {
   display: flex;
   justify-content: space-between;
@@ -302,10 +306,6 @@ h1 {
   border-radius: 0 0 11px 11px;
   box-shadow: 0px 4px 20px 4px rgba(0, 0, 0, 0.1);
   z-index: 7;
-}
-
-.dropdown:has(.dropdown__main.open) {
-  box-shadow: 0px 4px 20px 4px rgba(0, 0, 0, 0.1);
 }
 
 .dropdown__disclosure-triangle {
