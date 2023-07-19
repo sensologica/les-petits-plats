@@ -33,6 +33,7 @@ export function searchRecipes(input) {
   return searchResults;
 }
 
+// Replace native Array methods with native for loops.
 export function searchB(input) {
   function isAMatch(recipe) {
     const userInput = input.toLowerCase();
