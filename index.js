@@ -56,18 +56,20 @@ function extractUtensilsFrom(recipes) {
   return utensils;
 }
 
+let ingredientsDropdown, appliancesDropdown, utensilsDropdown;
+
 /**
  * Renders the three Dropdowns.
  * @returns {void}
  */
 function renderDropdowns() {
-  const ingredientsDropdown = new Dropdown("Ingrédients", "ingredients", extractIngredientsFrom(recipes));
+  ingredientsDropdown = new Dropdown("Ingrédients", "ingredients", extractIngredientsFrom(recipes));
   ingredientsDropdown.init();
 
-  const appliancesDropdown = new Dropdown("Appareils", "appliances", extractAppliancesFrom(recipes));
+  appliancesDropdown = new Dropdown("Appareils", "appliances", extractAppliancesFrom(recipes));
   appliancesDropdown.init();
 
-  const utensilsDropdown = new Dropdown("Ustensiles", "utensils", extractUtensilsFrom(recipes));
+  utensilsDropdown = new Dropdown("Ustensiles", "utensils", extractUtensilsFrom(recipes));
   utensilsDropdown.init();
 }
 
@@ -81,7 +83,7 @@ export const tagList = new TagList();
 const recipesWrapper = document.querySelector(".recipes");
 
 /**
- * Populates the page with recipe cards.
+ * Populates the page with Recipe Cards.
  * @param {array} recipes - Each recipe will be used to create a Recipe Card. 
  * @returns {void}
  */
@@ -126,12 +128,38 @@ function listenForUserInput() {
 }
 
 export function updateResults(flag) {
-    const searchResults = (flag === "reset") ? searchRecipes("") : searchRecipes(userInput);
-    if (searchResults.length < 1) { errorNoMatchingRecipes(userInput) };
-    const filterResults = filterRecipes(recipes);
-    const intersectionResults = intersect(searchResults, filterResults);
-    renderRecipes(intersectionResults);
-    renderRecipeCounter(intersectionResults.length); 
+  const searchResults = (flag === "reset") ? searchRecipes("") : searchRecipes(userInput);
+  if (searchResults.length < 1) { errorNoMatchingRecipes(userInput) };
+  const filterResults = filterRecipes(recipes);
+  const intersectionResults = intersect(searchResults, filterResults);
+  renderRecipes(intersectionResults);
+  renderRecipeCounter(intersectionResults.length);
+
+  let remainingIngredients = extractIngredientsFrom(intersectionResults);
+  let remainingAppliances = extractAppliancesFrom(intersectionResults);
+  let remainingUtensils = extractUtensilsFrom(intersectionResults);
+
+  function excludeSelectionListItems() {
+    remainingIngredients = remainingIngredients.filter(ingredient => {
+      return !ingredientsDropdown.selectionList.some(item => item.text === ingredient);
+    });
+    remainingAppliances = remainingAppliances.filter(appliance => {
+      return !appliancesDropdown.selectionList.some(item => item.text === appliance);
+    });
+    remainingUtensils = remainingUtensils.filter(utensil => {
+      return !utensilsDropdown.selectionList.some(item => item.text === utensil);
+    });
+  }
+
+  excludeSelectionListItems();
+
+  ingredientsDropdown.optionList = remainingIngredients;
+  appliancesDropdown.optionList = remainingAppliances;
+  utensilsDropdown.optionList = remainingUtensils;
+
+  ingredientsDropdown.renderOptionList(ingredientsDropdown.optionList);
+  appliancesDropdown.renderOptionList(appliancesDropdown.optionList);
+  utensilsDropdown.renderOptionList(utensilsDropdown.optionList);
 }
 
 /**
