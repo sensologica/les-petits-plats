@@ -1,6 +1,9 @@
 # Les Petits Plats
 
-*This was project 7 out of 12 that I completed as part of the **OpenClassrooms JavaScript & React** course I took in 2023.*
+![artem-barinov_les-petits-plats_opt](https://github.com/user-attachments/assets/a12e41ef-6a35-4beb-9bd1-833bba4c7db0)
+
+
+*This was project 7 out of 12 that I completed as part of the **OpenClassrooms JavaScript & React** course I took in 2023-2024.*
 
 ## About
 
