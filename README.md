@@ -7,10 +7,10 @@
 * I was provided a Figma mockup and had to implement it using HTML and CSS.
 * I was instructed to build all interactivity and functionality from scratch using only vanilla JavaScript. This meant manipulating the DOM directly with JavaScript via events.
 * The recipe data was provided as an array of objects. Data had to be extracted, modeled, de-duplicated, and sorted.
-* The code was structured using an OOP approach, leveraging JavaScript Classes and ESM modules.
+* The code was structured using an OOP approach, leveraging JavaScript Classes. The code was organized into separate files and loaded as ESM modules.
 * The search bar input performs validation to activate only on queries longer than 3 characters, and an error is shown when no matches are found.
 * The search bar also performs basic input sanitization and ignores any special characters that match a regular expression. This is not the best solution in terms of UX because it silently ignores keystrokes inputting special characters, but this was not a requirement and I added this feature as a bonus.
-* The main challenge was ensuring that when several filters of different categories are selected, the results surface an _intersection_ of the selected filters.
+* The main challenge was ensuring that when several filters of different categories are selected, the results represent an _intersection_ of the selected filters.
 
 Project specs:
 * Platform: Desktop
@@ -26,11 +26,11 @@ Project specs:
 
 ## Try it!
 
-## Live instance
+### Live instance
 
 You can try the app live [here](https://les-petits-plats.artembarinov.com/).
 
-## Clone and serve
+### Clone and serve
 
 Alternatively, you can clone this repository and run the app locally:
 
@@ -39,7 +39,7 @@ Alternatively, you can clone this repository and run the app locally:
 * Install and run the [Live Preview extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.live-server) (This or an alternative web server extension is necessary to properly load JavaScript modules the app relies on)
 * By default, the Live Preview extension will run the project at `http://127.0.0.1:3000/index.html`. Navigate to this address in your web browser to see the functional application
 
-## What to try?
+### What to try?
 
 Here are some things you can try to test-drive the app:
 - [ ] Make sure you view the app on a computer. The project brief did not require this app to be responsive so it is not optimized for viewing on mobile devices.
