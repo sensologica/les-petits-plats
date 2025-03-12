@@ -13,7 +13,8 @@
 * The code was structured using an OOP approach, leveraging JavaScript Classes. The code was organized into separate files and loaded as ESM modules.
 * The search bar input performs validation to activate only on queries longer than 3 characters, and an error is shown when no matches are found.
 * The search bar also performs basic input sanitization and ignores any special characters that match a regular expression. This is not the best solution in terms of UX because it silently ignores keystrokes inputting special characters, but this was not a requirement and I added this feature as a bonus.
-* The main challenge was ensuring that when several filters of different categories are selected, the results represent an _intersection_ of the selected filters.
+* We were asked to write a search algorithm twice: once using JavaScript's native methods such as `Array.prototype.filter()`, `String.prototype.includes()`, etc., and then another time using basic `for` loops. We compared the performance of the two algorithms using jsben.ch and jsbench.me and learned that the algorithm using `for` loops is faster, but has a tradeoff that the code is less easy to read. The difference was minimal on our data set that contains only 50 recipes, but the difference would become progressively more significant the larger the data set in question.
+* The most challenging part of the project, however, was ensuring that when several filters of different categories are selected, the results represent an _intersection_ of the selected filters.
 
 Project specs:
 * Platform: Desktop
